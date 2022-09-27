@@ -36,7 +36,7 @@ class EodhdDataGathering(object):
         client = APIClient(self.api_key)
 
         url = 'https://eodhistoricaldata.com/api/eod/MCD.US'
-        params = {'api_token': self.api_key, 'period': 'd', 'fmt': 'json'}
+        params = {'api_token': 'demo', 'period': 'd', 'fmt': 'json'}
         response = requests.get(url, params=params)
 
         data = response.json()
