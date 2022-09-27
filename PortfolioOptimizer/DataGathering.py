@@ -33,8 +33,6 @@ class EodhdDataGathering(object):
             data(pandas DataFrame): The data.
         """
 
-        client = APIClient(self.api_key)
-
         # demo url: 'https://eodhistoricaldata.com/api/eod/MCD.US'
         # use with 'api_token': 'demo'
         url = 'https://eodhistoricaldata.com/api/eod/MCD.US'
