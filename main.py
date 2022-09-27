@@ -79,6 +79,22 @@ def main():
     eodhd_data = eodhd_engine.get_data('MCD.US', '2019-01-01', '2020-01-01')
     st.write(eodhd_data)
 
+    ####################################################################
+    # General Notes
+    ####################################################################
+
+    st.markdown("#### General Notes")
+    st.markdown("##### Investment Choices")
+    st.write("We currently include Bitcoin and Ethereum through ETFs since "
+             "we wanted to stay consistent and include only ETFs. That being said, "
+             "we would recommend investing directly into Bitcoin and Ethereum if possible, "
+             "since the ETFs have management fees of 0.95% and 2.50%, respectively, "
+             "as of Sept. 27, 2022.")
+
+    st.markdown("##### Optimization Methods")
+    st.error("Fill this in")
+
+
 if __name__ == '__main__':
     main()
 
