@@ -1,1 +1,2 @@
+eodhd>=1.0.7
 streamlit>=1.13.0

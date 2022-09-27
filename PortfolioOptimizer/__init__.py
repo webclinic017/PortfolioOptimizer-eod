@@ -1,1 +1,3 @@
 from PortfolioOptimizer import GlobalVariables
+from PortfolioOptimizer.Credentials import Credentials
+from PortfolioOptimizer.DataGathering import EodhdDataGathering

@@ -73,7 +73,11 @@ def main():
     # Data Pull
     ####################################################################
 
-
+    # pull the data
+    api_key = portopt.Credentials.eodhd_api_key
+    eodhd_engine = portopt.EodhdDataGathering(api_key)
+    eodhd_data = eodhd_engine.get_data()
+    st.write(eodhd_data)
 
 if __name__ == '__main__':
     main()
