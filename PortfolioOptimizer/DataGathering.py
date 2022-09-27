@@ -2,9 +2,8 @@
 Sets up connections and pulls data.
 """
 
+import pandas as pd
 import requests
-
-from eodhd import APIClient
 
 
 class EodhdDataGathering(object):
@@ -25,20 +24,26 @@ class EodhdDataGathering(object):
         Gets data from eodhd.
 
         Args:
-            ticker(string): The ticker to pull data for.
+            ticker(string): The ticker to pull data for. Should really
+                be ticker.exchange, such as AAPL.US.
             start_date(string): The start date to pull data for.
+                Format as YYYY-MM-DD.
             end_date(string): The end date to pull data for.
+                Format as YYYY-MM-DD.
 
         Returns:
-            data(pandas DataFrame): The data.
+            df(pandas DataFrame): The data.
         """
 
         # demo url: 'https://eodhistoricaldata.com/api/eod/MCD.US'
         # use with 'api_token': 'demo'
         url = 'https://eodhistoricaldata.com/api/eod/MCD.US'
         params = {'api_token': 'demo', 'period': 'd', 'fmt': 'json'}
+        #url = 'https://eodhistoricaldata.com/api/eod/' + ticker
+        #params = {'api_token': self.api_key, 'from': start_date, 'to': end_date, 'period': 'd', 'fmt': 'json'}
         response = requests.get(url, params=params)
 
         data = response.json()
+        df = pd.DataFrame(data)
 
-        return data
+        return df
