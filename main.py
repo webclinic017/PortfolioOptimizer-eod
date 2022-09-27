@@ -55,7 +55,8 @@ def main():
                                                   default=portopt.GlobalVariables.DEFAULT_INVESTMENTS)
     objective_selection = st.sidebar.radio("What would you like to optimize for?",
                                            portopt.GlobalVariables.OBJECTIVE_CHOICES,
-                                           index=portopt.GlobalVariables.OBJECTIVE_CHOICES.index(portopt.GlobalVariables.DEFAULT_OBJECTIVE)
+                                           index=portopt.GlobalVariables.OBJECTIVE_CHOICES.index(
+                                               portopt.GlobalVariables.DEFAULT_OBJECTIVE))
     optimizer_option_selection = st.sidebar.multiselect("Which optimization methods would you like to use?",
                                                         portopt.GlobalVariables.OPTIMIZER_CHOICES,
                                                         default=portopt.GlobalVariables.DEFAULT_OPTIMIZER_OPTIONS)
