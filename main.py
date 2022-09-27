@@ -8,6 +8,10 @@ import streamlit as st
 
 
 def main():
+    ####################################################################
+    # Basic Setup
+    ####################################################################
+
     # set up the page
     st.set_page_config(page_title="Portfolio Optimizer", layout="wide")
 
@@ -23,6 +27,10 @@ def main():
         sidebar_title_format = f'<p style="text-align: center; font-family:Garamond; color:blue; ' \
                                f'font-size: 30px; font-weight: bold;">{title_writing}</p>'
         st.sidebar.markdown(sidebar_title_format, unsafe_allow_html=True)
+
+    ####################################################################
+    # User Options
+    ####################################################################
 
     # define what the tool does for the user
     st.write("This tool will help you optimize your portfolio by finding the optimal weights "
@@ -53,13 +61,19 @@ def main():
     investment_selection = st.sidebar.multiselect("Which investments would you like to include?",
                                                   portopt.GlobalVariables.INVESTMENT_CHOICES,
                                                   default=portopt.GlobalVariables.DEFAULT_INVESTMENTS)
-    objective_selection = st.sidebar.radio("What would you like to optimize for?",
-                                           portopt.GlobalVariables.OBJECTIVE_CHOICES,
-                                           index=portopt.GlobalVariables.OBJECTIVE_CHOICES.index(
-                                               portopt.GlobalVariables.DEFAULT_OBJECTIVE))
+    objective_selection = st.sidebar.selectbox("What would you like to optimize for?",
+                                               portopt.GlobalVariables.OBJECTIVE_CHOICES,
+                                               index=portopt.GlobalVariables.OBJECTIVE_CHOICES.index(
+                                                   portopt.GlobalVariables.DEFAULT_OBJECTIVE))
     optimizer_option_selection = st.sidebar.multiselect("Which optimization methods would you like to use?",
                                                         portopt.GlobalVariables.OPTIMIZER_CHOICES,
                                                         default=portopt.GlobalVariables.DEFAULT_OPTIMIZER_OPTIONS)
+
+    ####################################################################
+    # Data Pull
+    ####################################################################
+
+
 
 if __name__ == '__main__':
     main()
