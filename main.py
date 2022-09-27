@@ -85,6 +85,7 @@ def main():
 
     st.markdown("#### General Notes")
     st.markdown("##### Investment Choices")
+    st.error("Add three columns for name, etf, index for each investment")
     st.write("We currently include Bitcoin and Ethereum through ETFs since "
              "we wanted to stay consistent and include only ETFs. That being said, "
              "we would recommend investing directly into Bitcoin and Ethereum if possible, "
