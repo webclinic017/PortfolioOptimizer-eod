@@ -76,7 +76,7 @@ def main():
     # pull the data
     api_key = portopt.Credentials.eodhd_api_key
     eodhd_engine = portopt.EodhdDataGathering(api_key)
-    eodhd_data = eodhd_engine.get_data()
+    eodhd_data = eodhd_engine.get_data('MCD.US', '2019-01-01', '2020-01-01')
     st.write(eodhd_data)
 
 if __name__ == '__main__':

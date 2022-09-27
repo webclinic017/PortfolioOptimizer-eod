@@ -19,7 +19,7 @@ class EodhdDataGathering(object):
 
         self.api_key = api_key
 
-    def get_data(self): #, ticker, start_date, end_date):
+    def get_data(self, ticker, start_date, end_date):
         """
         Gets data from eodhd.
 
@@ -36,10 +36,8 @@ class EodhdDataGathering(object):
         """
 
         # demo url: 'https://eodhistoricaldata.com/api/eod/MCD.US'
-        # use with 'api_token': 'demo'
-        url = 'https://eodhistoricaldata.com/api/eod/MCD.US'
-        params = {'api_token': 'demo', 'period': 'd', 'fmt': 'json'}
-        #url = 'https://eodhistoricaldata.com/api/eod/' + ticker
+        params = {'api_token': 'demo', 'from': start_date, 'to': end_date, 'period': 'd', 'fmt': 'json'}
+        url = 'https://eodhistoricaldata.com/api/eod/' + ticker
         #params = {'api_token': self.api_key, 'from': start_date, 'to': end_date, 'period': 'd', 'fmt': 'json'}
         response = requests.get(url, params=params)
 
