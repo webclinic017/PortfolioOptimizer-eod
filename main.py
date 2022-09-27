@@ -50,9 +50,9 @@ def main():
              "Descriptions of these methods can be seen below.")
 
     # let the user choose their options
-    investment_selection = st.sidebar.("Which investments would you like to include?",
-                                       portopt.GlobalVariables.INVESTMENT_CHOICES,
-                                       default=portopt.GlobalVariables.DEFAULT_INVESTMENTS)
+    investment_selection = st.sidebar.multiselect("Which investments would you like to include?",
+                                                  portopt.GlobalVariables.INVESTMENT_CHOICES,
+                                                  default=portopt.GlobalVariables.DEFAULT_INVESTMENTS)
 
 
 if __name__ == '__main__':
