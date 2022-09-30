@@ -35,7 +35,8 @@ class EodhdDataGathering(object):
             df(pandas DataFrame): The data.
         """
 
-        # demo url: 'https://eodhistoricaldata.com/api/eod/MCD.US'
+        # demo url (the MCD.US is part of the demo url):
+        # 'https://eodhistoricaldata.com/api/eod/MCD.US'
         params = {'api_token': 'demo', 'from': start_date, 'to': end_date, 'period': 'd', 'fmt': 'json'}
         url = 'https://eodhistoricaldata.com/api/eod/' + ticker
         #params = {'api_token': self.api_key, 'from': start_date, 'to': end_date, 'period': 'd', 'fmt': 'json'}

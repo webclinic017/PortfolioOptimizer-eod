@@ -46,20 +46,20 @@ def main():
              "might be considered pretty exhaustive and non-overlapping. Including only US stocks, "
              "comparatively, would be less exhaustive, and if you included both US stocks as a "
              "whole and US large cap stocks, that would be overlapping.")
-    st.write("Next, choose the metric/risk you would like to target. This is not given for you "
+    st.write("Next, choose the metric/risk you would like to target. This is customizable "
              "since each investor might have a different goal and risk tolerance, which can "
              "depend on things like liquidity needs, general comfort with risk, time horizon, "
              "whether this represents your entire portfolio or just a portion, etc. You can either "
              "target the optimal Sharpe Ratio (returns/risk) or choose a risk level comparable "
              "to standard mixes of stocks and bonds (e.g. 60/40, 70/30, etc.).")
-    st.write("Finally, choose the type of optimization you would like. We recommend using both "
-             "bootstrapping and PCA as we believe those are more ideal for creating a stable "
+    st.write("Finally, choose the type of optimization method features you would like. We "
+             "recommend bootstrapping as we believe it is more ideal for creating a stable "
              "portfolio through time, especially given uncertainty in future market returns. "
-             "Descriptions of these methods can be seen below.")
+             "Descriptions of this method can be seen below.")
 
     # let the user choose their options
     investment_selection = st.sidebar.multiselect("Which investments would you like to include?",
-                                                  portopt.GlobalVariables.INVESTMENT_CHOICES,
+                                                  portopt.GlobalVariables.SECURITY_MAPPING.keys(),
                                                   default=portopt.GlobalVariables.DEFAULT_INVESTMENTS)
     objective_selection = st.sidebar.selectbox("What would you like to optimize for?",
                                                portopt.GlobalVariables.OBJECTIVE_CHOICES,
@@ -85,7 +85,7 @@ def main():
 
     st.markdown("#### General Notes")
     st.markdown("##### Investment Choices")
-    st.error("Add three columns for name, etf, index for each investment")
+    st.error("Add three columns for name, etf, index, cost for each investment")
     st.write("We currently include Bitcoin and Ethereum through ETFs since "
              "we wanted to stay consistent and include only ETFs. That being said, "
              "we would recommend investing directly into Bitcoin and Ethereum if possible, "
