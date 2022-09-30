@@ -79,18 +79,40 @@ def main():
     eodhd_data = eodhd_engine.get_data('MCD.US', '2019-01-01', '2020-01-01')
     st.write(eodhd_data)
 
+
+
+
+
     ####################################################################
     # General Notes
     ####################################################################
 
     st.markdown("#### General Notes")
     st.markdown("##### Investment Choices")
-    st.error("Add three columns for name, etf, index, cost for each investment")
+    col1_inv_choices, col2_inv_choices, col3_inv_choices, col4_inv_choices, col5_inv_choices = \
+        st.columns(5)
+    with col2_inv_choices:
+        st.markdown('**Asset Classes**')
+        for investment in portopt.GlobalVariables.SECURITY_MAPPING.keys():
+            st.write(investment)
+    with col3_inv_choices:
+        st.markdown('**ETF Tickers**')
+        for etf in portopt.GlobalVariables.SECURITY_MAPPING.values():
+            st.write(etf[0])
+    with col4_inv_choices:
+        st.markdown('**ETF Names**')
+        for etf in portopt.GlobalVariables.SECURITY_MAPPING.values():
+            st.write(etf[1])
+    with col5_inv_choices:
+        st.markdown('**ETF Fees/***')
+        for etf in portopt.GlobalVariables.SECURITY_MAPPING.values():
+            st.write(etf[2])
+    st.write('/* Fees are based on fund websites as of 2022-09-30.')
     st.write("We currently include Bitcoin and Ethereum through ETFs since "
              "we wanted to stay consistent and include only ETFs. That being said, "
              "we would recommend investing directly into Bitcoin and Ethereum if possible, "
              "since the ETFs have management fees of 0.95% and 2.50%, respectively, "
-             "as of Sept. 27, 2022.")
+             "as of Sept. 30, 2022.")
 
     st.markdown("##### Optimization Methods")
     st.error("Fill this in")
