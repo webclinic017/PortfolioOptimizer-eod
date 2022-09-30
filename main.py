@@ -115,7 +115,18 @@ def main():
              "as of Sept. 30, 2022.")
 
     st.markdown("##### Optimization Methods")
-    st.error("Fill this in")
+    st.write('Bootstrapping:')
+    st.write('Bootstrapping is a method of using historical data, taking random sub-samples '
+             'of that data and using each sub-sample to create an estimate of some metric. ')
+    st.write('Since the sub-samples are random and semi-uncorrelated, the estimates are also '
+             'semi-uncorrelated. The metrics from each sub-sample are then averaged to create a '
+             'single estimate, which better deals with uncertainty in the data and is not '
+             'as impacted by outliers that would skew a metric taken from all the data.')
+    st.write('In this case, we take subsamples of the historical returns for each investment. '
+             'Those subsamples also maintain some semblance of the ordering of the original data '
+             'to be more robust to maintaining the correlation of the data through time. '
+             'Each subsample is then used to optimize a portfolio of the given investments '
+             'and the weights from each subsample are averaged to create a single set of weights.')
 
 
 if __name__ == '__main__':
