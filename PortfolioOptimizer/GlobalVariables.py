@@ -47,7 +47,7 @@ OPTIMIZER_CHOICES = ['Bootstrapping']
 
 # User defaults
 DEFAULT_INVESTMENTS = ['US Stocks', 'DM Stocks', 'EM Stocks', 'Global Bonds',
-                       'Commodities', 'Real Estate']
+                       'Commodities']
 DEFAULT_OBJECTIVE = 'Max Sharpe Ratio (Return/Risk)'
 DEFAULT_OPTIMIZER_OPTIONS = ['Bootstrapping']
 
