@@ -19,7 +19,7 @@ class EodhdDataGathering(object):
 
         self.api_key = api_key
 
-    def get_data(self, ticker, start_date, end_date):
+    def get_data(self, ticker, start_date=None, end_date=None):
         """
         Gets data from eodhd.
 

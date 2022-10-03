@@ -76,11 +76,17 @@ def main():
     # pull the data
     api_key = portopt.Credentials.eodhd_api_key
     eodhd_engine = portopt.EodhdDataGathering(api_key)
-    eodhd_data = eodhd_engine.get_data('MCD.US', '2019-01-01', '2020-01-01')
+    eodhd_data = eodhd_engine.get_data(ticker='MCD.US', end_date='2020-01-01')
     st.write(eodhd_data)
 
-
-
+    """
+    # pull credentials and save the data
+    gcp_engine = portopt.GCPTools(service_type='bigquery',
+                                  scope='https://www.googleapis.com/auth/bigquery',
+                                  credentials='Credentials/portfoliooptimization-364417-acac0596c4ff.json')
+    gcp_engine.store_df_bigquery(eodhd_data, 'portfoliooptimization-364417', 'assetclassprices',
+                                 'mcd_daily')
+    """
 
 
     ####################################################################
@@ -108,7 +114,7 @@ def main():
         decimals=inv_table_decimal_places)
     st.markdown(inv_table, unsafe_allow_html=True)
     # add a note about the ETFs
-    st.write('* Fees are based on fund websites as of 2022-09-30.')
+    st.write('*Fees are based on fund websites as of 2022-09-30.')
     st.write("We currently include Bitcoin and Ethereum through ETFs since "
              "we wanted to stay consistent and include only ETFs. That being said, "
              "we would recommend investing directly into Bitcoin and Ethereum if possible, "
