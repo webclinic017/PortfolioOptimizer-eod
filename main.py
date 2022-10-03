@@ -88,7 +88,27 @@ def main():
     ####################################################################
 
     st.markdown("#### General Notes")
+
     st.markdown("##### Investment Choices")
+    # use HTML / CSS styling to create a table
+    format_engine = portopt.FormatEngine()
+    html_table_style = format_engine.create_html_table_style()
+    st.markdown(html_table_style, unsafe_allow_html=True)
+    # create the table
+    inv_table_title = 'Asset Classes'
+    inv_table_headers = ['ETF Tickers', 'ETF Names', 'ETF Fees']
+    inv_table_line_items = portopt.GlobalVariables.SECURITY_MAPPING
+    inv_table_indent = []
+    inv_table_underline = []
+    inv_table_format_type = 'percent'
+    inv_table_decimal_places = 1
+    inv_table = format_engine.create_html_table(
+        inv_table_title, inv_table_headers, inv_table_line_items,
+        inv_table_indent, inv_table_underline, inv_table_format_type,
+        decimals=inv_table_decimal_places)
+    st.markdown(inv_table, unsafe_allow_html=True)
+
+    '''
     col1_inv_choices, col2_inv_choices, col3_inv_choices, col4_inv_choices, col5_inv_choices = \
         st.columns(5)
     with col2_inv_choices:
@@ -104,15 +124,16 @@ def main():
         for etf in portopt.GlobalVariables.SECURITY_MAPPING.values():
             st.write(etf[1])
     with col5_inv_choices:
-        st.markdown('**ETF Fees/***')
+        st.markdown('**ETF Fees***')
         for etf in portopt.GlobalVariables.SECURITY_MAPPING.values():
             st.write(etf[2])
-    st.write('/* Fees are based on fund websites as of 2022-09-30.')
+    st.write('* Fees are based on fund websites as of 2022-09-30.')
     st.write("We currently include Bitcoin and Ethereum through ETFs since "
              "we wanted to stay consistent and include only ETFs. That being said, "
              "we would recommend investing directly into Bitcoin and Ethereum if possible, "
              "since the ETFs have management fees of 0.95% and 2.50%, respectively, "
              "as of Sept. 30, 2022.")
+    '''
 
     st.markdown("##### Optimization Methods")
     st.write('Bootstrapping:')

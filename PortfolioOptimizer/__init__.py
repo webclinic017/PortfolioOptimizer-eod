@@ -1,3 +1,4 @@
 from PortfolioOptimizer import GlobalVariables
 from PortfolioOptimizer.Credentials import Credentials
 from PortfolioOptimizer.DataGathering import EodhdDataGathering
+from PortfolioOptimizer.StreamlitTools import StreamlitTools

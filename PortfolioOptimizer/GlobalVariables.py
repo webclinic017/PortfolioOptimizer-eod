@@ -30,7 +30,7 @@ SECURITY_MAPPING = {'Global Stocks': ('ACWI.US', 'iShares MSCI ACWI', '0.33%'),
                                                       '(Markit iBoxx USD Liquid High Yield '
                                                       'Index)', '0.48%'),
                     'TIPS': ('TIP.US', 'iShares TIPS Bond (Bloomberg U.S. Treasury Inflation '
-                                       'Protected Securities (TIPS) Index', '0.19%'),
+                                       'Protected Securities (TIPS) Index)', '0.19%'),
                     'Commodities': ('GSG.US', 'iShares S&P GSCI Commodity-Indexed Trust', '0.75%'),
                     'Oil': ('USO.US', 'United States Oil Fund', '0.45%'),
                     'Gold': ('GLD.US', 'SPDR Gold Shares', '0.40%'),
