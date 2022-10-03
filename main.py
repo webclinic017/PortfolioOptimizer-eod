@@ -76,17 +76,18 @@ def main():
     # pull the data
     api_key = portopt.Credentials.eodhd_api_key
     eodhd_engine = portopt.EodhdDataGathering(api_key)
-    eodhd_data = eodhd_engine.get_data(ticker='MCD.US', end_date='2020-01-01')
+    eodhd_data = eodhd_engine.get_data(ticker='MCD.US', end_date='2022-09-30')
     st.write(eodhd_data)
 
-    """
-    # pull credentials and save the data
+    # save the data to GCP BigQuery
     gcp_engine = portopt.GCPTools(service_type='bigquery',
                                   scope='https://www.googleapis.com/auth/bigquery',
                                   credentials='Credentials/portfoliooptimization-364417-acac0596c4ff.json')
     gcp_engine.store_df_bigquery(eodhd_data, 'portfoliooptimization-364417', 'assetclassprices',
                                  'mcd_daily')
-    """
+
+
+
 
 
     ####################################################################
