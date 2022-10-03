@@ -82,7 +82,7 @@ def main():
     # save the data to GCP BigQuery
     gcp_engine = portopt.GCPTools(service_type='bigquery',
                                   scope='https://www.googleapis.com/auth/bigquery',
-                                  credentials='../PortfolioOptimzer/Credentials/portfoliooptimization-364417-acac0596c4ff.json')
+                                  credentials='PortfolioOptimzer/PortfolioOptimzer/Credentials/portfoliooptimization-364417-acac0596c4ff.json')
     gcp_engine.store_df_bigquery(eodhd_data, 'portfoliooptimization-364417', 'assetclassprices',
                                  'mcd_daily')
 
