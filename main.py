@@ -116,7 +116,7 @@ def main():
              "as of Sept. 30, 2022.")
 
     st.markdown("##### Optimization Methods")
-    st.write('Bootstrapping:')
+    st.write('**Bootstrapping**')
     st.write('Bootstrapping is a method of using historical data, taking random sub-samples '
              'of that data and using each sub-sample to create an estimate of some metric. ')
     st.write('Since the sub-samples are random and semi-uncorrelated, the estimates are also '
