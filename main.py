@@ -91,7 +91,7 @@ def main():
 
     st.markdown("##### Investment Choices")
     # use HTML / CSS styling to create a table
-    format_engine = portopt.FormatEngine()
+    format_engine = portopt.StreamlitTools()
     html_table_style = format_engine.create_html_table_style()
     st.markdown(html_table_style, unsafe_allow_html=True)
     # create the table
