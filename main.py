@@ -13,7 +13,7 @@ def main():
     ####################################################################
 
     import os
-    print(os.cpu_count())
+    st.write(os.cpu_count())
 
     # set up the page
     st.set_page_config(page_title="Portfolio Optimizer", layout="wide")
