@@ -12,6 +12,9 @@ def main():
     # Basic Setup
     ####################################################################
 
+    import os
+    print(os.cpu_count())
+
     # set up the page
     st.set_page_config(page_title="Portfolio Optimizer", layout="wide")
 
