@@ -115,8 +115,6 @@ def main():
              'Each subsample is then used to optimize a portfolio of the given investments '
              'and the weights from each subsample are averaged to create a single set of weights.')
 
-    import os
-    st.write(os.cpu_count())
 
 if __name__ == '__main__':
     main()
