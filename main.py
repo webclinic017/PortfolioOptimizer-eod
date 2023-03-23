@@ -91,7 +91,12 @@ def main():
     data_engine = DataTools()
     tables = data_engine.pull_ticker_tables()
     return_data = data_engine.pull_return_data(tables)
+
     st.write(return_data)
+
+    ####################################################################
+    # Get correct returns based on user input
+    # Impute missing data if necessary
 
     ####################################################################
     # General Notes
