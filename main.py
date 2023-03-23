@@ -4,7 +4,6 @@ Runs the portfolio optimizer.
 
 from PortfolioOptimizer import GlobalVariables as gv
 from PortfolioOptimizer.DataTools import DataTools
-from PortfolioOptimizer.GCPTools import GCPTools
 from PortfolioOptimizer.StreamlitTools import StreamlitTools
 
 import pandas as pd
@@ -91,22 +90,8 @@ def main():
     # pull the data
     data_engine = DataTools()
     tables = data_engine.pull_ticker_tables()
-    gcp_engine = GCPTools('bigquery',
-                          'https://www.googleapis.com/auth/bigquery',
-                          st.secrets['gcp_bigquery_service_account'])
-    for i, table in enumerate(tables):
-        if i == 0:
-            price_data = gcp_engine.pull_df_bigquery(
-                'portfoliooptimization-364417', 'assetclassprices', table)
-            price_data = price_data[['adjclose']]
-            price_data.columns = [table]
-        else:
-            curr_price_data = gcp_engine.pull_df_bigquery(
-                'portfoliooptimization-364417', 'assetclassprices', table)
-            curr_price_data = curr_price_data[['adjclose']]
-            curr_price_data.columns = [table]
-            price_data = pd.concat([price_data, curr_price_data], axis=1)
-    st.write(price_data)
+    return_data = data_engine.pull_return_data(tables)
+    st.write(return_data)
 
     ####################################################################
     # General Notes
