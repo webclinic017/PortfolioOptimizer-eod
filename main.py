@@ -4,6 +4,8 @@ Runs the portfolio optimizer.
 
 from PortfolioOptimizer import GlobalVariables as gv
 from PortfolioOptimizer.DataTools import DataTools
+from PortfolioOptimizer.GCPTools import GCPTools
+from PortfolioOptimizer.StreamlitTools import StreamlitTools
 
 import streamlit as st
 
@@ -88,6 +90,9 @@ def main():
     # pull the data
     data_engine = DataTools()
     tables = data_engine.pull_ticker_tables()
+    gcp_engine = GCPTools()
+    print(st.session_state['gcp_bigquery_service_account'])
+    price_data = gcp_engine.pull_df_bigquery()
 
     st.write(tables)
 
@@ -99,13 +104,13 @@ def main():
 
     st.markdown("##### Investment Choices")
     # use HTML / CSS styling to create a table
-    format_engine = portopt.StreamlitTools()
+    format_engine = StreamlitTools()
     html_table_style = format_engine.create_html_table_style()
     st.markdown(html_table_style, unsafe_allow_html=True)
     # create the table
     inv_table_title = 'Asset Classes'
     inv_table_headers = ['ETF Tickers', 'ETF Names', 'ETF Fees*']
-    inv_table_line_items = portopt.GlobalVariables.SECURITY_MAPPING
+    inv_table_line_items = gv.SECURITY_MAPPING
     inv_table_indent = []
     inv_table_underline = []
     inv_table_format_type = 'percent'
