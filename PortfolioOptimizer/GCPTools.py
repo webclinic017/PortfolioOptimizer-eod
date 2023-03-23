@@ -45,7 +45,7 @@ class GCPTools(object):
         scope = [self.scope]
         our_credentials = self.credentials
         # get credentials
-        creds = service_account.Credentials.from_service_account_file(
+        creds = service_account.Credentials.from_service_account_info(
             our_credentials, scopes=scope)
         # set up client
         if self.service_type == 'bigquery':
