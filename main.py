@@ -98,6 +98,7 @@ def main():
         if i == 0:
             price_data = gcp_engine.pull_df_bigquery(
                 'portfoliooptimization-364417', 'assetclassprices', table)
+            st.write(price_data)
         else:
             curr_price_data = gcp_engine.pull_df_bigquery(
                 'portfoliooptimization-364417', 'assetclassprices', table)
