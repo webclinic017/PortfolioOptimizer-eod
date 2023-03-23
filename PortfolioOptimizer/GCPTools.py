@@ -8,8 +8,6 @@ Classes:
 from google.cloud import bigquery
 from google.oauth2 import service_account
 
-import streamlit as st
-
 
 class GCPTools(object):
     """
