@@ -2,7 +2,8 @@
 Runs the portfolio optimizer.
 """
 
-import PortfolioOptimizer as portopt
+from PortfolioOptimizer import GlobalVariables as gv
+from PortfolioOptimizer.DataTools import DataTools
 
 import streamlit as st
 
@@ -71,17 +72,24 @@ def main():
     # let the user choose their options
     investment_selection = st.sidebar.multiselect(
         "Which investments would you like to include?",
-        portopt.GlobalVariables.SECURITY_MAPPING.keys(),
-        default=portopt.GlobalVariables.DEFAULT_INVESTMENTS)
+        gv.SECURITY_MAPPING.keys(), default=gv.DEFAULT_INVESTMENTS)
     objective_selection = st.sidebar.selectbox(
         "What would you like to optimize for?",
-        portopt.GlobalVariables.OBJECTIVE_CHOICES,
-        index=portopt.GlobalVariables.OBJECTIVE_CHOICES.index(
-            portopt.GlobalVariables.DEFAULT_OBJECTIVE))
+        gv.OBJECTIVE_CHOICES, index=gv.OBJECTIVE_CHOICES.index(
+            gv.DEFAULT_OBJECTIVE))
     optimizer_option_selection = st.sidebar.multiselect(
         "Which optimization methods would you like to use?",
-        portopt.GlobalVariables.OPTIMIZER_CHOICES,
-        default=portopt.GlobalVariables.DEFAULT_OPTIMIZER_OPTIONS)
+        gv.OPTIMIZER_CHOICES, default=gv.DEFAULT_OPTIMIZER_OPTIONS)
+
+    ####################################################################
+    # Pull Data
+    ####################################################################
+
+    # pull the data
+    data_engine = DataTools()
+    tables = data_engine.pull_ticker_tables()
+
+    st.write(tables)
 
     ####################################################################
     # General Notes

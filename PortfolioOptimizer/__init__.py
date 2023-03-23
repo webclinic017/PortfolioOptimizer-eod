@@ -1,4 +1,4 @@
 from PortfolioOptimizer import GlobalVariables
-from PortfolioOptimizer.DataGathering import EodhdDataGathering
+from PortfolioOptimizer.DataTools import DataTools
 from PortfolioOptimizer.GCPTools import GCPTools
 from PortfolioOptimizer.StreamlitTools import StreamlitTools

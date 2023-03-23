@@ -82,3 +82,36 @@ class GCPTools(object):
                        "Error getting table from BigQuery.\n"
                        "Error: " + str(e))
             raise ValueError(log_str)
+
+    def pull_df_bigquery(self, project, dataset, table_name, index=None):
+        """
+        Pull DataFrame data from BigQuery.
+
+        Args:
+            project(string): The GCP project.
+            dataset(string): The GCP dataset.
+            table_name(string): The GCP table name.
+            index(string): If we want to set an index for the DataFrame,
+                the default from BigQuery is to only set the column names.
+
+        Returns:
+            df(DataFrame): The DataFrame with the data.
+        """
+
+        # create and run the query
+        table_id = project + "." + dataset + "." + table_name
+        sql_statement = f"SELECT * FROM {table_id}"
+        query_job = self.client.query(sql_statement)
+        query_job.result()
+
+        table = self.client.get_table(table_id)  # Make an API request.
+        print("Pulled {} rows and {} columns from {}".format(
+            table.num_rows, len(table.schema), table_id))
+
+        # create the df and set the index if we want to
+        df = query_job.to_dataframe()
+        if index:
+            df.set_index(index, inplace=True)
+            df.sort_index(inplace=True)
+
+        return df
