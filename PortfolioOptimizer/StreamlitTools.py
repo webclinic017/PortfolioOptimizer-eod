@@ -120,7 +120,8 @@ class StreamlitTools(object):
                 # set to float
                 if isinstance(curr_num, float):
                     # set to number type with commas and decimals
-                    curr_num = '{:,.{decimals}f}'.format(curr_num, decimals=decimals)
+                    curr_num = '{:,.{decimals}f}'.format(curr_num,
+                                                         decimals=decimals)
                 # make string
                 curr_num = str(curr_num)
             # turn 0 or Null into -
@@ -155,7 +156,8 @@ class StreamlitTools(object):
         for curr_num in numbers:
             if not (isinstance(curr_num, str)):
                 # set to percentage type with decimals
-                curr_num = '{0:.{decimals}%}'.format(curr_num, decimals=decimals)
+                curr_num = '{0:.{decimals}%}'.format(curr_num,
+                                                     decimals=decimals)
                 # make string
                 curr_num = str(curr_num)[:-1]
             # turn 0 or Null into -
@@ -166,8 +168,9 @@ class StreamlitTools(object):
 
         return formatted_numbers
 
-    def create_html_table(self, title, col_headers, line_items, indent_items, underline_items,
-                          format_type, blank_after=[], **kwargs):
+    def create_html_table(self, title, col_headers, line_items, indent_items,
+                          underline_items, format_type, blank_after=[],
+                          **kwargs):
         """
         Creates a string to be used to create a
         table with HTML. This is what is used in the <table> ...
@@ -226,7 +229,8 @@ class StreamlitTools(object):
                 formatted_key = key
             # add the line item first
             if key in underline_items:
-                html_table += f'<tr class="border_bottom"><th>{formatted_key}</th>'
+                html_table += f'<tr class="border_bottom"><th>' \
+                              f'{formatted_key}</th>'
             else:
                 html_table += f'<tr><th>{formatted_key}</th>'
             # create the values in the correct format
@@ -235,7 +239,8 @@ class StreamlitTools(object):
             elif format_type == 'float':
                 formatted_values = self.format_float(values, **kwargs)
             else:
-                formatted_values = self.format_percentages(values, **kwargs)
+                formatted_values = self.format_percentages(values,
+                                                           **kwargs)
             for curr_value in formatted_values:
                 html_table += f'<td align="right">{curr_value}</td>'
             # close the line

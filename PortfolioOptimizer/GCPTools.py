@@ -5,9 +5,6 @@ Classes:
     GCPTools: Creates connections and interactions with GCP.
 """
 
-import json
-import pandas as pd
-
 from google.cloud import bigquery
 from google.oauth2 import service_account
 
@@ -48,14 +45,15 @@ class GCPTools(object):
         scope = [self.scope]
         our_credentials = self.credentials
         # get credentials
-        creds = service_account.Credentials.from_service_account_file(our_credentials, scopes=scope)
+        creds = service_account.Credentials.from_service_account_file(
+            our_credentials, scopes=scope)
         # set up client
         if self.service_type == 'bigquery':
             self.client = bigquery.Client(credentials=creds)
         else:
             log_str = ("*******************Error*******************\n"
-                       "GCPTools currently only supports connections to bigquery "
-                       "(service_type='bigquery').")
+                       "GCPTools currently only supports connections to "
+                       "bigquery (service_type='bigquery').")
             raise ValueError(log_str)
 
     def store_df_bigquery(self, df, project, dataset, table_name):
@@ -78,7 +76,7 @@ class GCPTools(object):
         job.result()
 
         try:
-            table = self.client.get_table(table_id)  # Make an API request.
+            table = self.client.get_table(table_id)  # Make an API request
         except Exception as e:
             log_str = ("*******************Error*******************\n"
                        "Error getting table from BigQuery.\n"

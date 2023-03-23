@@ -37,9 +37,11 @@ class EodhdDataGathering(object):
 
         # demo url (the MCD.US is part of the demo url):
         # 'https://eodhistoricaldata.com/api/eod/MCD.US'
-        params = {'api_token': 'demo', 'from': start_date, 'to': end_date, 'period': 'd', 'fmt': 'json'}
+        params = {'api_token': 'demo', 'from': start_date, 'to': end_date,
+                  'period': 'd', 'fmt': 'json'}
         url = 'https://eodhistoricaldata.com/api/eod/' + ticker
-        #params = {'api_token': self.api_key, 'from': start_date, 'to': end_date, 'period': 'd', 'fmt': 'json'}
+        #params = {'api_token': self.api_key, 'from': start_date,
+        #          'to': end_date, 'period': 'd', 'fmt': 'json'}
         response = requests.get(url, params=params)
 
         data = response.json()
