@@ -52,6 +52,6 @@ class DataTools(object):
 
         # calculate returns
         returns = price_data.pct_change()
-        returns = returns.dropna()
+        returns = returns.iloc[1:, :]
 
         return returns
