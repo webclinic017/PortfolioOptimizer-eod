@@ -98,10 +98,13 @@ def main():
         if i == 0:
             price_data = gcp_engine.pull_df_bigquery(
                 'portfoliooptimization-364417', 'assetclassprices', table)
-            st.write(price_data)
+            price_data = price_data[['adjclose']]
+            price_data.columns = [table]
         else:
             curr_price_data = gcp_engine.pull_df_bigquery(
                 'portfoliooptimization-364417', 'assetclassprices', table)
+            curr_price_data = curr_price_data[['adjclose']]
+            curr_price_data.columns = [table]
             price_data = pd.concat([price_data, curr_price_data], axis=1)
     st.write(price_data)
 
