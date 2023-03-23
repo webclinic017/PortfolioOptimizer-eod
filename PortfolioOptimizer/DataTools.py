@@ -41,12 +41,14 @@ class DataTools(object):
         for i, table in enumerate(tables):
             if i == 0:
                 price_data = gcp_engine.pull_df_bigquery(
-                    'portfoliooptimization-364417', 'assetclassprices', table)
+                    'portfoliooptimization-364417', 'assetclassprices', table,
+                    'date')
                 price_data = price_data[['adjclose']]
                 price_data.columns = [table]
             else:
                 curr_price_data = gcp_engine.pull_df_bigquery(
-                    'portfoliooptimization-364417', 'assetclassprices', table)
+                    'portfoliooptimization-364417', 'assetclassprices', table,
+                    'date')
                 curr_price_data = curr_price_data[['adjclose']]
                 curr_price_data.columns = [table]
                 price_data = pd.concat([price_data, curr_price_data], axis=1)
