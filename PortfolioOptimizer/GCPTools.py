@@ -46,7 +46,7 @@ class GCPTools(object):
         our_credentials = self.credentials
         # get credentials
         creds = service_account.Credentials.from_service_account_info(
-            our_credentials, scopes=scope)
+            our_credentials)
         # set up client
         if self.service_type == 'bigquery':
             self.client = bigquery.Client(credentials=creds)
