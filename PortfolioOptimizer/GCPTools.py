@@ -46,7 +46,6 @@ class GCPTools(object):
         # set scopes and credentials
         scope = [self.scope]
         our_credentials = self.credentials
-        st.write(our_credentials)
         # get credentials
         creds = service_account.Credentials.from_service_account_info(
             our_credentials)
