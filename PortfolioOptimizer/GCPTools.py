@@ -8,6 +8,8 @@ Classes:
 from google.cloud import bigquery
 from google.oauth2 import service_account
 
+import streamlit as st
+
 
 class GCPTools(object):
     """
@@ -44,6 +46,7 @@ class GCPTools(object):
         # set scopes and credentials
         scope = [self.scope]
         our_credentials = self.credentials
+        st.write(our_credentials)
         # get credentials
         creds = service_account.Credentials.from_service_account_info(
             our_credentials)
