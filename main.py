@@ -90,9 +90,9 @@ def main():
     # pull the data
     data_engine = DataTools()
     tables = data_engine.pull_ticker_tables()
-    gcp_engine = GCPTools()
+    #gcp_engine = GCPTools()
     print(st.session_state['gcp_bigquery_service_account'])
-    price_data = gcp_engine.pull_df_bigquery()
+    #price_data = gcp_engine.pull_df_bigquery()
 
     st.write(tables)
 
