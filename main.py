@@ -25,12 +25,12 @@ def main():
                        f'font-size: 40px; font-weight: bold;">' \
                        f'{title_writing}</p>'
         st.markdown(title_format, unsafe_allow_html=True)
-        # and set up the sidebar too
-        sidebar_title_format = f'<p style="text-align: center; ' \
-                               f'font-family:Garamond; color:blue; ' \
-                               f'font-size: 30px; font-weight: bold;">' \
-                               f'{title_writing}</p>'
-        st.sidebar.markdown(sidebar_title_format, unsafe_allow_html=True)
+    # and set up the sidebar too
+    sidebar_title_format = f'<p style="text-align: center; ' \
+                           f'font-family:Garamond; color:blue; ' \
+                           f'font-size: 30px; font-weight: bold;">' \
+                           f'{title_writing}</p>'
+    st.sidebar.markdown(sidebar_title_format, unsafe_allow_html=True)
 
     ####################################################################
     # User Options
