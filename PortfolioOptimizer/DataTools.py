@@ -39,20 +39,15 @@ class DataTools(object):
         # get each set of price data and take the adjusted close
         # combine all so they are in one dataframe
         for i, table in enumerate(tables):
+            curr_price_data = gcp_engine.pull_df_bigquery(
+                'portfoliooptimization-364417', 'assetclassprices', table,
+                'date')
+            curr_price_data.index = pd.to_datetime(curr_price_data.index)
+            curr_price_data = curr_price_data[['adjclose']]
+            curr_price_data.columns = [table]
             if i == 0:
-                price_data = gcp_engine.pull_df_bigquery(
-                    'portfoliooptimization-364417', 'assetclassprices', table,
-                    'date')
-                price_data.index = pd.to_datetime(price_data.index)
-                price_data = price_data[['adjclose']]
-                price_data.columns = [table]
+                price_data = curr_price_data
             else:
-                curr_price_data = gcp_engine.pull_df_bigquery(
-                    'portfoliooptimization-364417', 'assetclassprices', table,
-                    'date')
-                curr_price_data.index = pd.to_datetime(curr_price_data.index)
-                curr_price_data = curr_price_data[['adjclose']]
-                curr_price_data.columns = [table]
                 price_data = pd.concat([price_data, curr_price_data], axis=1)
 
         # calculate returns
