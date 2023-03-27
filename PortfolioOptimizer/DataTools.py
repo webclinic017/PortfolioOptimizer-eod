@@ -46,7 +46,8 @@ class DataTools(object):
                 'date')
             curr_price_data.index = pd.to_datetime(curr_price_data.index)
             curr_price_data = curr_price_data[['adjclose']]
-            curr_price_data.columns = [table]
+            col_name = table.split('_')[0]
+            curr_price_data.columns = [col_name]
             if i == 0:
                 price_data = curr_price_data
             else:
@@ -72,4 +73,3 @@ class DataTools(object):
         imp_data = imp.data
 
         return imp_data
-    
