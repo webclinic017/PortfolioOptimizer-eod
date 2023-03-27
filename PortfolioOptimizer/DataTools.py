@@ -71,5 +71,6 @@ class DataTools(object):
         imp.update_all()
         # get the imputed data
         imp_data = imp.data
+        imp_data.index = data.index
 
         return imp_data
