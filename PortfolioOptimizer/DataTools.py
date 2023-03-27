@@ -74,8 +74,9 @@ class DataTools(object):
         # get data for the selected investments
         user_tickers = [gv.SECURITY_MAPPING[x][0] for x in
                         investment_selection]
-        # remove the .US from the ticker if it's there
-        user_tickers = [x.split('.')[0] for x in user_tickers]
+        # remove the .US from the ticker if it's there and make it
+        # lowercase
+        user_tickers = [x.split('.')[0].lower() for x in user_tickers]
 
         # get the data for the selected investments
         user_data = return_data[user_tickers]
