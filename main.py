@@ -104,6 +104,7 @@ def main():
     imp_data = data_engine.pmm(return_data)
 
     st.write(imp_data)
+    st.write(type(imp_data))
 
     ####################################################################
     # Get correct returns based on user input
