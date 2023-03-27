@@ -101,10 +101,10 @@ def main():
 
     st.write(user_tickers)
 
-    imp_data = data_engine.pmm(return_data)
+    for _ in range(2):
+        imp_data = data_engine.pmm(return_data)
 
-    st.write(imp_data)
-    st.write(type(imp_data))
+        st.write(imp_data)
 
     ####################################################################
     # Get correct returns based on user input

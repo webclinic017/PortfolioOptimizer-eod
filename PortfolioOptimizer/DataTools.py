@@ -59,18 +59,20 @@ class DataTools(object):
 
         return returns
 
-    def pmm(self, data):
+    def pmm(self, data: pd.DataFrame, d: int) -> pd.DataFrame:
         """
         Perform predictive mean matching and yield a result.
         :param data: The data to perform PMM on.
+        :param d: The number of imputations to perform.
         :return imp_data: The data with PMM applied.
         """
         # set up the imputer
         imp = mice.MICEData(data)
-        # perform PMM
-        imp.update_all()
-        # get the imputed data
-        imp_data = imp.data
-        imp_data.index = data.index
+        for i in range(d):
+            # perform PMM
+            imp.update_all()
+            # get the imputed data
+            imp_data = imp.data
+            imp_data.index = data.index
 
-        return imp_data
+            yield imp_data
