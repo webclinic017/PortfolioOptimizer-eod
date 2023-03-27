@@ -9,6 +9,8 @@ from PortfolioOptimizer.GCPTools import GCPTools
 import pandas as pd
 import streamlit as st
 
+from statsmodels.imputation import mice
+
 
 class DataTools(object):
     """
@@ -55,3 +57,19 @@ class DataTools(object):
         returns = returns.iloc[1:, :]
 
         return returns
+
+    def pmm(self, data):
+        """
+        Perform predictive mean matching and yield a result.
+        :param data: The data to perform PMM on.
+        :return imp_data: The data with PMM applied.
+        """
+        # set up the imputer
+        imp = mice.MICEData(data)
+        # perform PMM
+        imp.update_all()
+        # get the imputed data
+        imp_data = imp.data
+
+        return imp_data
+    
