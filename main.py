@@ -94,7 +94,12 @@ def main():
 
     st.write(return_data)
 
-    user_return_data
+    # get data for the selected investments
+    user_tickers = [gv.SECURITY_MAPPING[x][0] for x in investment_selection]
+    # remove the .us from the ticker if it's there
+    user_tickers = [x.replace('.us', '') for x in user_tickers]
+
+    st.write(user_tickers)
 
     imp_data = data_engine.pmm(return_data)
 
