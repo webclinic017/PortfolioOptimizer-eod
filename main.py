@@ -96,8 +96,8 @@ def main():
 
     # get data for the selected investments
     user_tickers = [gv.SECURITY_MAPPING[x][0] for x in investment_selection]
-    # remove the .us from the ticker if it's there
-    user_tickers = [x.replace('.us', '') for x in user_tickers]
+    # remove the .US from the ticker if it's there
+    user_tickers = [x.replace('.US', '') for x in user_tickers]
 
     st.write(user_tickers)
 
