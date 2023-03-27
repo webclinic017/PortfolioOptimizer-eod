@@ -81,7 +81,7 @@ class DataTools(object):
         # get the data for the selected investments
         user_data = return_data[user_tickers]
         # also get an indicator for whether any data is missing
-        missing_data = user_data.isna().any()
+        missing_data = user_data.isnull().values.any()
 
         return user_data, missing_data
 
