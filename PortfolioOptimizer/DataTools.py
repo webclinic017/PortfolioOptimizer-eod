@@ -10,6 +10,7 @@ import pandas as pd
 import streamlit as st
 
 from statsmodels.imputation import mice
+from typing import Tuple
 
 
 class DataTools(object):
@@ -58,6 +59,30 @@ class DataTools(object):
         returns = returns.iloc[1:, :]
 
         return returns
+
+    def get_user_data(self, investment_selection: list,
+                      return_data: pd.DataFrame) -> Tuple[pd.DataFrame, bool]:
+        """
+        Get the return data for the investments the user selected, as well
+            as an indicator for whether any data is missing.
+        :param investment_selection: The investments the user selected.
+        :param return_data: The return data for all investments.
+        :return user_data: The return data for the selected investments.
+        :return missing_data: An indicator for whether any data is
+            missing.
+        """
+        # get data for the selected investments
+        user_tickers = [gv.SECURITY_MAPPING[x][0] for x in
+                        investment_selection]
+        # remove the .US from the ticker if it's there
+        user_tickers = [x.split('.')[0] for x in user_tickers]
+
+        # get the data for the selected investments
+        user_data = return_data[user_tickers]
+        # also get an indicator for whether any data is missing
+        missing_data = user_data.isna().any()
+
+        return user_data, missing_data
 
     def pmm(self, data: pd.DataFrame, d: int) -> pd.DataFrame:
         """

@@ -95,11 +95,11 @@ def main():
     st.write(return_data)
 
     # get data for the selected investments
-    user_tickers = [gv.SECURITY_MAPPING[x][0] for x in investment_selection]
-    # remove the .US from the ticker if it's there
-    user_tickers = [x.split('.')[0] for x in user_tickers]
+    user_return_data, any_missing = data_engine.get_user_data(
+        investment_selection, return_data)
 
-    st.write(user_tickers)
+    st.write(user_return_data)
+    st.write(any_missing)
 
     imp_data = data_engine.pmm(return_data, 2)
     for _ in range(2):
