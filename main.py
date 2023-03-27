@@ -100,6 +100,7 @@ def main():
 
     st.write(user_return_data)
     st.write(any_missing)
+    st.write(type(any_missing))
 
     imp_data = data_engine.pmm(return_data, 2)
     for _ in range(2):
