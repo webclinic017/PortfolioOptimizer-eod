@@ -6,7 +6,6 @@ from PortfolioOptimizer import GlobalVariables as gv
 from PortfolioOptimizer.DataTools import DataTools
 from PortfolioOptimizer.StreamlitTools import StreamlitTools
 
-import pandas as pd
 import streamlit as st
 
 
@@ -98,17 +97,23 @@ def main():
     user_return_data, any_missing = data_engine.get_user_data(
         investment_selection, return_data)
 
-    st.write(user_return_data)
-    st.write(any_missing)
-    st.write(type(any_missing))
+    # if we have missing data, we need to impute it and run the analysis
+    # for each set of imputed data
+    if any_missing:
+        imp_data = data_engine.pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
+        for _ in range(gv.DEFAULT_IMPUTE_COUNT):
+            user_return_data, _ = data_engine.get_user_data(
+                investment_selection, next(imp_data))
+            st.write(user_return_data)
 
-    imp_data = data_engine.pmm(return_data, 2)
-    for _ in range(2):
-        st.write(next(imp_data))
+            ##############################################################
+            # RUN OPTIMIZATION / NEXT STEPS HERE
 
-    ####################################################################
-    # Get correct returns based on user input
-    # Impute missing data if necessary
+    # if we don't have missing data, we can just run the analysis
+    else:
+        pass
+        ##############################################################
+        # RUN OPTIMIZATION / NEXT STEPS HERE
 
     ####################################################################
     # General Notes

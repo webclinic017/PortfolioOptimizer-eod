@@ -51,6 +51,9 @@ DEFAULT_INVESTMENTS = ['US Stocks', 'DM Stocks', 'EM Stocks', 'Global Bonds',
 DEFAULT_OBJECTIVE = 'Max Sharpe Ratio (Return/Risk)'
 DEFAULT_OPTIMIZER_OPTIONS = ['Bootstrapping']
 
+# Imputation defaults
+DEFAULT_IMPUTE_COUNT = 5
+
 
 
 
