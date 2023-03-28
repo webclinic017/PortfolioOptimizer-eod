@@ -4,6 +4,7 @@ Define metrics about the portfolio.
 """
 
 import numpy as np
+import pandas as pd
 
 
 class PortfolioMetrics(object):

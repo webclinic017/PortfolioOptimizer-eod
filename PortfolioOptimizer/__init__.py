@@ -2,4 +2,5 @@ from PortfolioOptimizer import GlobalVariables
 from PortfolioOptimizer.DataTools import DataTools
 from PortfolioOptimizer.GCPTools import GCPTools
 from PortfolioOptimizer.Optimizer import Optimizer
+from PortfolioOptimizer.PortfolioMetrics import PortfolioMetrics
 from PortfolioOptimizer.StreamlitTools import StreamlitTools
