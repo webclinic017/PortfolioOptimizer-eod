@@ -56,7 +56,8 @@ class Optimizer(object):
         :return results: The results of the optimization.
         """
         # set up the starting weights
-        x0 = np.ones(self.returns.shape[1]) / self.returns.shape[1]
+        #x0 = np.ones(self.returns.shape[1]) / self.returns.shape[1]
+        x0 = [1, 0, 0, 0]
 
         # set up the constraints
         # we want the holdings to be long-only
