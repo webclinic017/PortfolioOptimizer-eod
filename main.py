@@ -98,9 +98,29 @@ def main():
     user_return_data, any_missing = data_engine.get_user_data(
         investment_selection, return_data)
 
-    # if we have missing data, we need to impute it and run the analysis
-    # for each set of imputed data
-    if any_missing:
+    # if we don't have missing data, we can just run the analysis
+    if not any_missing:
+        opt_engine = Optimizer(user_return_data)
+        obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
+        if obj_func == 'max_return':
+            bench_rets = return_data[['acwi', 'bnd']]
+            bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
+            metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
+            bench_stddev = metrics_engine.stddev()
+            st.write(bench_stddev)
+            weights = opt_engine.optimize(obj_func, bench_stddev)
+        else:
+            weights = opt_engine.optimize(obj_func)
+
+        st.write(weights)
+        st.write(opt_engine.stddev(weights))
+
+        ##############################################################
+        # DEAL WITH IMPUTATION/BOOTSTRAPPING
+
+    else:
+        # if we have missing data, we need to impute it and run the analysis
+        # for each set of imputed data
         imp_data = data_engine.pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
         for _ in range(gv.DEFAULT_IMPUTE_COUNT):
             user_return_data, _ = data_engine.get_user_data(
@@ -109,25 +129,6 @@ def main():
 
             ##############################################################
             # RUN OPTIMIZATION / NEXT STEPS HERE
-
-    # if we don't have missing data, we can just run the analysis
-    else:
-        opt_engine = Optimizer(user_return_data)
-        obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
-        if obj_func == 'max_return':
-            bench_rets = return_data[['acwi', 'bnd']]
-            bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
-            metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
-            bench_stddev = metrics_engine.stddev()
-            weights = opt_engine.optimize(obj_func, bench_stddev)
-        else:
-            weights = opt_engine.optimize(obj_func)
-
-        st.write(weights)
-
-        ##############################################################
-        # DID SHARPE, NEED TO ADD STD DEV CONTSTRAINTS TO MAX_RETURN,
-        # THEN DEAL WITH IMPUTATION/BOOTSTRAPPING
 
     ####################################################################
     # General Notes
