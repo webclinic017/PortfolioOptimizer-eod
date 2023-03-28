@@ -84,7 +84,7 @@ class Optimizer(object):
             func = self.max_return
             tgt_stddev_const = ({'type': 'eq',
                                  'fun': lambda x: self.stddev(x) - tgt_stddev})
-            cons = cons.update(tgt_stddev_const)
+            cons.update(tgt_stddev_const)
 
         # run the optimization
         results = minimize(func, x0, bounds=bnds, constraints=cons).x
