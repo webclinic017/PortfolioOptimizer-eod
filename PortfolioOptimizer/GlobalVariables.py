@@ -38,7 +38,7 @@ SECURITY_MAPPING = {'Global Stocks': ('ACWI.US', 'iShares MSCI ACWI', '0.33%'),
                     #               not actual real estate and so this is covered in stocks.
                     'Bitcoin': ('BITO.US', 'ProShares Bitcoin', '0.95%'),
                     'Ethereum': ('ETHE.US', 'Grayscale Ethereum Trust', '2.50%')}
-OBJECTIVE_CHOICES = {'Max Sharpe Ratio (Return/Risk)',
+OBJECTIVE_CHOICES = ['Max Sharpe Ratio (Return/Risk)',
                      '90% Stock / 10% Bond Equivalent',
                      '80% Stock / 20% Bond Equivalent',
                      '70% Stock / 30% Bond Equivalent',
@@ -47,7 +47,7 @@ OBJECTIVE_CHOICES = {'Max Sharpe Ratio (Return/Risk)',
                      '40% Stock / 60% Bond Equivalent',
                      '30% Stock / 70% Bond Equivalent',
                      '20% Stock / 80% Bond Equivalent',
-                     '10% Stock / 90% Bond Equivalent'}
+                     '10% Stock / 90% Bond Equivalent']
 OPTIMIZER_CHOICES = ['Bootstrapping']
 
 # User defaults
