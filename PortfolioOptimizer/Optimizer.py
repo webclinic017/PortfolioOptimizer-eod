@@ -5,7 +5,6 @@ An optimizer for portfolio optimization.
 
 import numpy as np
 import pandas as pd
-import streamlit as st
 
 from scipy.optimize import minimize
 from typing import Union
@@ -49,11 +48,24 @@ class Optimizer(object):
 
         return neg_avg_return
 
-    def optimize(self, method: str = 'sharpe_ratio') -> pd.DataFrame:
+    def stddev(self, weights: Union[list, np.ndarray]) -> float:
+        """
+        Calculate the standard deviation.
+        :param weights: The weights for the portfolio.
+        :return stddev: The standard deviation of the portfolio.
+        """
+        stddev = np.std(np.dot(weights, self.returns.T))
+
+        return stddev
+
+    def optimize(self, method: str = 'sharpe_ratio',
+                 tgt_stddev: float = None) -> pd.DataFrame:
         """
         Run the optimization to get the weights for the portfolio.
         :param method: The method to use for optimization. Takes either
             'sharpe_ratio' or 'max_return'.
+        :param tgt_stddev: The target standard deviation for the portfolio
+            if you need it to optimize with 'max_return'.
         :return results: The results of the optimization.
         """
         # set up the starting weights
@@ -70,12 +82,9 @@ class Optimizer(object):
             func = self.sharpe_ratio
         else:
             func = self.max_return
-
-        st.write(func)
-        st.write(x0)
-        st.write(bnds)
-        st.write(cons)
-        st.write(self.returns)
+            tgt_stddev_const = ({'type': 'eq',
+                                 'fun': lambda x: self.stddev(x) - tgt_stddev})
+            cons = cons.update(tgt_stddev_const)
 
         # run the optimization
         results = minimize(func, x0, bounds=bnds, constraints=cons).x

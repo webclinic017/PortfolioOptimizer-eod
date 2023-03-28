@@ -112,19 +112,20 @@ def main():
     # if we don't have missing data, we can just run the analysis
     else:
         opt_engine = Optimizer(user_return_data)
-        obj_func = gv.OBJECTIVE_CHOICES[objective_selection]
+        obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
+        if obj_func == 'max_return':
+            bench_rets = return_data[['acwi', 'bnd']]
+            bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
 
-        st.write(obj_func)
+            st.write(bench_rets)
+            st.write(bench_weights)
 
         weights = opt_engine.optimize(obj_func)
 
         st.write(weights)
 
-        st.write(opt_engine.max_return(weights))
-        st.write(opt_engine.max_return([1, 0, 0, 0]))
-
         ##############################################################
-        # DID SHARPE, NEED TO DO MAX RETURNS W/STD DEV CONTSTRAINTS,
+        # DID SHARPE, NEED TO ADD STD DEV CONTSTRAINTS TO MAX_RETURN,
         # THEN DEAL WITH IMPUTATION/BOOTSTRAPPING
 
     ####################################################################
