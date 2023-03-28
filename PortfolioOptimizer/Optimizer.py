@@ -84,10 +84,9 @@ class Optimizer(object):
             func = self.max_return
             # we want the sum of the weights to be 1 and the std dev
             # to be equal to the target
-            #cons = (
-            #    {'type': 'eq', 'fun': lambda x: np.sum(x) - 1},
-            #    {'type': 'eq', 'fun': lambda x: self.stddev(x) - tgt_stddev})
-            cons = ({'type': 'eq', 'fun': lambda x: self.stddev(x) - tgt_stddev})
+            cons = (
+                {'type': 'eq', 'fun': lambda x: np.sum(x) - 1},
+                {'type': 'eq', 'fun': lambda x: self.stddev(x) - tgt_stddev})
 
         st.write(method)
         st.write(tgt_stddev)
@@ -96,5 +95,6 @@ class Optimizer(object):
         results = minimize(func, x0, bounds=bnds, constraints=cons)
 
         st.write(results.success)
+        st.write(results.message)
 
         return results.x
