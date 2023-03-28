@@ -72,23 +72,21 @@ class Optimizer(object):
         # set up the starting weights
         x0 = np.ones(self.returns.shape[1]) / self.returns.shape[1]
 
-        # set up the constraints
-        # we want the holdings to be long-only
+        # set up the bounds - we want the holdings to be long-only
         bnds = tuple((0, 1) for _ in range(self.returns.shape[1]))
-        # we want the sum of the weights to be 1
-        cons = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
 
-        # get the objective function
+        # get the objective function and set constraints
         if method == 'sharpe_ratio':
             func = self.sharpe_ratio
+            # we want the sum of the weights to be 1
+            cons = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
         else:
             func = self.max_return
-            tgt_stddev_const = ({'type': 'eq',
-                                 'fun': lambda x: self.stddev(x) - tgt_stddev})
-            cons.update(tgt_stddev_const)
-
-        st.write("bnds", bnds)
-        st.write("cons", cons)
+            # we want the sum of the weights to be 1 and the std dev
+            # to be equal to the target
+            cons = (
+                {'type': 'eq', 'fun': lambda x: np.sum(x) - 1},
+                {'type': 'eq', 'fun': lambda x: self.stddev(x) - tgt_stddev})
 
         # run the optimization
         results = minimize(func, x0, bounds=bnds, constraints=cons).x
