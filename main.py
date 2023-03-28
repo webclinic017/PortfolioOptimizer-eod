@@ -118,6 +118,7 @@ def main():
         st.write(weights)
 
         st.write(opt_engine.max_return(weights))
+        st.write(opt_engine.max_return([1, 0, 0, 0]))
 
         ##############################################################
         # DID SHARPE, NEED TO DO MAX RETURNS W/STD DEV CONTSTRAINTS,
