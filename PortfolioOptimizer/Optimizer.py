@@ -87,7 +87,7 @@ class Optimizer(object):
             #cons = (
             #    {'type': 'eq', 'fun': lambda x: np.sum(x) - 1},
             #    {'type': 'eq', 'fun': lambda x: self.stddev(x) - tgt_stddev})
-            cons = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
+            cons = ({'type': 'eq', 'fun': lambda x: self.stddev(x) - tgt_stddev})
 
         st.write(method)
         st.write(tgt_stddev)
