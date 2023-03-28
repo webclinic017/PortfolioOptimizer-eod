@@ -8,6 +8,9 @@ from PortfolioOptimizer.StreamlitTools import StreamlitTools
 
 import streamlit as st
 
+import pandas as pd
+import numpy as np
+
 
 def main():
     ####################################################################
@@ -85,7 +88,11 @@ def main():
     # Objective Function
     ####################################################################
 
-
+    test_weights = [0.1, 0.2, 0.3, 0.4]
+    test_returns = pd.DataFrame([[0.05, 0.1, 0.0, -0.2],
+                                 [0.1, 0.2, 0.1, -0.1]])
+    test_out = np.dot(test_weights, test_returns)
+    st.write(test_out)
 
     ####################################################################
     # Pull Data
