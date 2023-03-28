@@ -93,6 +93,8 @@ class Optimizer(object):
         st.write(tgt_stddev)
 
         # run the optimization
-        results = minimize(func, x0, bounds=bnds, constraints=cons).x
+        results = minimize(func, x0, bounds=bnds, constraints=cons)
 
-        return results
+        st.write(results.success)
+
+        return results.x
