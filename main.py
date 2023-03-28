@@ -118,7 +118,8 @@ def main():
         st.write(weights)
 
         ##############################################################
-        # RUN OPTIMIZATION / NEXT STEPS HERE
+        # DID SHARPE, NEED TO DO MAX RETURNS W/STD DEV CONTSTRAINTS,
+        # THEN DEAL WITH IMPUTATION/BOOTSTRAPPING
 
     ####################################################################
     # General Notes

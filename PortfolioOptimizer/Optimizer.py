@@ -10,20 +10,6 @@ from scipy.optimize import minimize
 from typing import Union
 
 
-def max_return(weights: Union[list, np.ndarray],
-               returns: Union[pd.DataFrame, np.ndarray]) -> float:
-    """
-    Calculate the maximum return.
-    :param weights: The weights for the portfolio.
-    :param returns: The returns for the portfolio.
-    :return avg_return: The average return.
-    """
-    max_return = np.dot(weights, returns.T)
-    avg_return = np.average(max_return)
-
-    return avg_return
-
-
 class Optimizer(object):
     """
     Helps with the setup and run of an optimization.
@@ -49,6 +35,19 @@ class Optimizer(object):
 
         return neg_sharpe_ratio
 
+    def max_return(self, weights: Union[list, np.ndarray]) -> float:
+        """
+        Calculate the maximum return.
+        :param weights: The weights for the portfolio.
+        :return neg_avg_return: The negative of the average return since
+            we want to maximize it, but are using a minimizer.
+        """
+        max_return = np.dot(weights, self.returns.T)
+        avg_return = np.average(max_return)
+        neg_avg_return = -1 * avg_return
+
+        return neg_avg_return
+
     def optimize(self, method: str = 'sharpe_ratio') -> pd.DataFrame:
         """
         Run the optimization to get the weights for the portfolio.
@@ -69,7 +68,7 @@ class Optimizer(object):
         if method == 'sharpe_ratio':
             func = self.sharpe_ratio
         else:
-            func = max_return
+            func = self.max_return
 
         # run the optimization
         results = minimize(func, x0, bounds=bnds, constraints=cons).x
