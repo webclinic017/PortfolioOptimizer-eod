@@ -5,6 +5,7 @@ An optimizer for portfolio optimization.
 
 import numpy as np
 import pandas as pd
+import streamlit as st
 
 from scipy.optimize import minimize
 from typing import Union
@@ -85,6 +86,9 @@ class Optimizer(object):
             tgt_stddev_const = ({'type': 'eq',
                                  'fun': lambda x: self.stddev(x) - tgt_stddev})
             cons.update(tgt_stddev_const)
+
+        st.write("bnds", bnds)
+        st.write("cons", cons)
 
         # run the optimization
         results = minimize(func, x0, bounds=bnds, constraints=cons).x
