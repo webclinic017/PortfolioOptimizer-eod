@@ -21,7 +21,7 @@ class Optimizer(object):
             the portfolio.
         """
         # the optimizer can fail to move if the returns are too small
-        self.returns = returns * 10000
+        self.returns = returns * 100
 
     def sharpe_ratio(self, weights: Union[list, np.ndarray]) -> float:
         """

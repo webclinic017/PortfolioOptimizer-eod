@@ -103,7 +103,7 @@ def main():
         opt_engine = Optimizer(user_return_data)
         obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
         if obj_func == 'max_return':
-            bench_rets = return_data[['acwi', 'bnd']]
+            bench_rets = return_data[['acwi', 'bnd']] * 100
             bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
             metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
             bench_stddev = metrics_engine.stddev()
