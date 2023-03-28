@@ -40,15 +40,15 @@ SECURITY_MAPPING = {'Global Stocks': ('ACWI.US', 'iShares MSCI ACWI', '0.33%'),
                     'Bitcoin': ('BITO.US', 'ProShares Bitcoin', '0.95%'),
                     'Ethereum': ('ETHE.US', 'Grayscale Ethereum Trust', '2.50%')}
 OBJECTIVE_CHOICES = {'Max Sharpe Ratio (Return/Risk)': 'sharpe_ratio',
-                     '90% Stock / 10% Bond Equivalent': 'max_returns',
-                     '80% Stock / 20% Bond Equivalent': 'max_returns',
-                     '70% Stock / 30% Bond Equivalent': 'max_returns',
-                     '60% Stock / 40% Bond Equivalent': 'max_returns',
-                     '50% Stock / 50% Bond Equivalent': 'max_returns',
-                     '40% Stock / 60% Bond Equivalent': 'max_returns',
-                     '30% Stock / 70% Bond Equivalent': 'max_returns',
-                     '20% Stock / 80% Bond Equivalent': 'max_returns',
-                     '10% Stock / 90% Bond Equivalent': 'max_returns'}
+                     '90% Stock / 10% Bond Equivalent': 'max_return',
+                     '80% Stock / 20% Bond Equivalent': 'max_return',
+                     '70% Stock / 30% Bond Equivalent': 'max_return',
+                     '60% Stock / 40% Bond Equivalent': 'max_return',
+                     '50% Stock / 50% Bond Equivalent': 'max_return',
+                     '40% Stock / 60% Bond Equivalent': 'max_return',
+                     '30% Stock / 70% Bond Equivalent': 'max_return',
+                     '20% Stock / 80% Bond Equivalent': 'max_return',
+                     '10% Stock / 90% Bond Equivalent': 'max_return'}
 OPTIMIZER_CHOICES = ['Bootstrapping']
 
 # User defaults
