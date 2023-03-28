@@ -116,7 +116,8 @@ def main():
         st.write(opt_engine.stddev(weights))
 
         ##############################################################
-        # DEAL WITH IMPUTATION/BOOTSTRAPPING
+        # DEAL WITH OPTIMIZATION NOT BEING SUCCESSFUL,
+        # IMPUTATION/BOOTSTRAPPING
 
     else:
         # if we have missing data, we need to impute it and run the analysis
