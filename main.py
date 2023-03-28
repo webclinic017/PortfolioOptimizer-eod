@@ -119,12 +119,9 @@ def main():
             bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
             metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
             bench_stddev = metrics_engine.stddev()
-
-            st.write(bench_rets)
-            st.write(bench_weights)
-            st.write(bench_stddev)
-
-        weights = opt_engine.optimize(obj_func)
+            weights = opt_engine.optimize(obj_func, bench_stddev)
+        else:
+            weights = opt_engine.optimize(obj_func)
 
         st.write(weights)
 
