@@ -5,6 +5,7 @@ An optimizer for portfolio optimization.
 
 import numpy as np
 import pandas as pd
+import streamlit as st
 
 from scipy.optimize import minimize
 from typing import Union
@@ -68,6 +69,12 @@ class Optimizer(object):
             func = self.sharpe_ratio
         else:
             func = self.max_return
+
+        st.write(func)
+        st.write(x0)
+        st.write(bnds)
+        st.write(cons)
+        st.write(self.returns)
 
         # run the optimization
         results = minimize(func, x0, bounds=bnds, constraints=cons).x

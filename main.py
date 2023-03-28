@@ -113,6 +113,9 @@ def main():
     else:
         opt_engine = Optimizer(user_return_data)
         obj_func = gv.OBJECTIVE_CHOICES[objective_selection]
+
+        st.write(obj_func)
+
         weights = opt_engine.optimize(obj_func)
 
         st.write(weights)
