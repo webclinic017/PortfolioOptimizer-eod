@@ -39,13 +39,15 @@ class Optimizer(object):
         """
         Calculate the Sharpe Ratio.
         :param weights: The weights for the portfolio.
-        :return sharpe_ratio: The Sharpe Ratio.
+        :return neg_sharpe_ratio: The negative of the Sharpe Ratio since
+            we want to maximize it, but are using a minimizer.
         """
         avg = np.average(np.dot(weights, self.returns.T))
         stddev = np.std(np.dot(weights, self.returns.T))
         sharpe_ratio = avg / stddev
+        neg_sharpe_ratio = -1 * sharpe_ratio
 
-        return sharpe_ratio
+        return neg_sharpe_ratio
 
     def optimize(self, method: str = 'sharpe_ratio') -> pd.DataFrame:
         """
