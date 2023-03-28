@@ -20,7 +20,8 @@ class Optimizer(object):
         :param returns: The returns of the different assets you want in
             the portfolio.
         """
-        self.returns = returns
+        # the optimizer can fail to move if the returns are too small
+        self.returns = returns * 100
 
     def sharpe_ratio(self, weights: Union[list, np.ndarray]) -> float:
         """
@@ -56,8 +57,7 @@ class Optimizer(object):
         :return results: The results of the optimization.
         """
         # set up the starting weights
-        #x0 = np.ones(self.returns.shape[1]) / self.returns.shape[1]
-        x0 = [1, 0, 0, 0]
+        x0 = np.ones(self.returns.shape[1]) / self.returns.shape[1]
 
         # set up the constraints
         # we want the holdings to be long-only
