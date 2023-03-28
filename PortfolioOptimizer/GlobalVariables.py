@@ -39,6 +39,7 @@ SECURITY_MAPPING = {'Global Stocks': ('ACWI.US', 'iShares MSCI ACWI', '0.33%'),
                     #               not actual real estate and so this is covered in stocks.
                     'Bitcoin': ('BITO.US', 'ProShares Bitcoin', '0.95%'),
                     'Ethereum': ('ETHE.US', 'Grayscale Ethereum Trust', '2.50%')}
+# {Objective Name: (Objective Function, (Stock %, Bond %))}
 OBJECTIVE_CHOICES = {
     'Max Sharpe Ratio (Return/Risk)': ('sharpe_ratio', (None, None)),
     '90% Stock / 10% Bond Equivalent': ('max_return', (.9, .1)),
