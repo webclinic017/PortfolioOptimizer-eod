@@ -91,7 +91,7 @@ def main():
     test_weights = [0.1, 0.2, 0.3, 0.4]
     test_returns = pd.DataFrame([[0.05, 0.1, 0.0, -0.2],
                                  [0.1, 0.2, 0.1, -0.1]])
-    test_out = np.dot(test_weights, test_returns)
+    test_out = np.dot(test_weights, test_returns.T)
     st.write(test_out)
 
     ####################################################################
