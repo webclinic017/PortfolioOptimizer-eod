@@ -79,7 +79,7 @@ def main():
         gv.SECURITY_MAPPING.keys(), default=gv.DEFAULT_INVESTMENTS)
     objective_selection = st.sidebar.selectbox(
         "What would you like to optimize for?",
-        gv.OBJECTIVE_CHOICES.keys(), index=0)
+        gv.OBJECTIVE_CHOICES, index=0)
     optimizer_option_selection = st.sidebar.multiselect(
         "Which optimization methods would you like to use?",
         gv.OPTIMIZER_CHOICES, default=gv.DEFAULT_OPTIMIZER_OPTIONS)
