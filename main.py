@@ -117,6 +117,8 @@ def main():
 
         st.write(weights)
 
+        st.write(opt_engine.max_return(weights))
+
         ##############################################################
         # DID SHARPE, NEED TO DO MAX RETURNS W/STD DEV CONTSTRAINTS,
         # THEN DEAL WITH IMPUTATION/BOOTSTRAPPING
