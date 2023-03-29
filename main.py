@@ -117,6 +117,7 @@ def main():
 
         ##############################################################
         # DEAL WITH OPTIMIZATION NOT BEING SUCCESSFUL,
+        # SHOULD RETURNS BE BASED ON THE COVARIANCE MATRIX???,
         # IMPUTATION/BOOTSTRAPPING
 
     else:

@@ -22,6 +22,12 @@ class Optimizer(object):
         """
         # the optimizer can fail to move if the returns are too small
         self.returns = returns * 100
+        # set up the starting weights
+        self.x0 = np.ones(self.returns.shape[1]) / self.returns.shape[1]
+        # set up the bounds - we want the holdings to be long-only
+        self.bnds = tuple((0, 1) for _ in range(self.returns.shape[1]))
+        # set up constraints later
+        self.cons = None
 
     def sharpe_ratio(self, weights: Union[list, np.ndarray]) -> float:
         """
@@ -69,32 +75,38 @@ class Optimizer(object):
             if you need it to optimize with 'max_return'.
         :return results: The results of the optimization.
         """
-        # set up the starting weights
-        x0 = np.ones(self.returns.shape[1]) / self.returns.shape[1]
-
-        # set up the bounds - we want the holdings to be long-only
-        bnds = tuple((0, 1) for _ in range(self.returns.shape[1]))
-
         # get the objective function and set constraints
         if method == 'sharpe_ratio':
             func = self.sharpe_ratio
             # we want the sum of the weights to be 1
-            cons = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
+            self.cons = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
         else:
             func = self.max_return
             # we want the sum of the weights to be 1 and the std dev
             # to be equal to the target
-            cons = (
+            self.cons = (
                 {'type': 'eq', 'fun': lambda x: np.sum(x) - 1},
                 {'type': 'eq', 'fun': lambda x: self.stddev(x) - tgt_stddev})
 
-        st.write(method)
-        st.write(tgt_stddev)
-
         # run the optimization
-        results = minimize(func, x0, bounds=bnds, constraints=cons)
+        results = minimize(func, self.x0, bounds=self.bnds,
+                           constraints=self.cons)
 
         st.write(results.success)
-        st.write(results.message)
+
+        # if the optimization failed and we are looking for max return,
+        # try again with the standard deviation as a constraint but allow
+        # the weights to be between 0 and 1, which would mean that if this
+        # succeeds, we would have a portfolio with less than 100% invested
+        # and the rest would be cash
+        if not results.success and method == 'max_return':
+            self.cons = (
+                {'type': 'eq', 'fun': lambda x: self.stddev(x) - tgt_stddev},
+                {'type': 'ineq', 'fun': lambda x: np.sum(x)},
+                {'type': 'ineq', 'fun': lambda x: 1 - np.sum(x)})
+            results = minimize(func, self.x0, bounds=self.bnds,
+                               constraints=self.cons)
+
+            st.write(results.success)
 
         return results.x
