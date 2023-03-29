@@ -92,8 +92,6 @@ class Optimizer(object):
         results = minimize(func, self.x0, bounds=self.bnds,
                            constraints=self.cons)
 
-        st.write(results.success)
-
         # if the optimization failed and we are looking for max return,
         # try again with the standard deviation as a constraint but allow
         # the weights to be between 0 and 1, which would mean that if this
@@ -107,6 +105,10 @@ class Optimizer(object):
             results = minimize(func, self.x0, bounds=self.bnds,
                                constraints=self.cons)
 
-            st.write(results.success)
+        # if the optimization fails, return None
+        # this should only happen if the target standard deviation is
+        # higher than the standard deviation of any asset in the portfolio
+        if not results.success:
+            return None
 
         return results.x
