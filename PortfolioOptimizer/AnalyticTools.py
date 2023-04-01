@@ -19,7 +19,7 @@ class AnalyticTools(object):
         """Calculate the volatility of the stock and bond portfolio given
             a desired weight in each."""
         # multiply by 100 since the optimizer needs higher values to work
-        bench_rets = return_data * 100
+        bench_rets = return_data
         # the weights are defined in the GlobalVariables file
         bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
         metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
