@@ -184,7 +184,7 @@ def main():
     metric_table_title = 'Metric'
     metric_table_headers = ['']
     metric_table_line_items = metrics
-    metric_table_format_type = 'percent'
+    metric_table_format_type = ['percent', 'percent', 'float']
     metric_table_decimal_places = 1
     metric_table = format_engine.create_html_table(
         metric_table_index_width, metric_table_title, metric_table_headers,
