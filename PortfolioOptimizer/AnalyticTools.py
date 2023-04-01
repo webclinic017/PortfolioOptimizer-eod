@@ -24,8 +24,6 @@ class AnalyticTools(object):
         bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
         opt_engine = Optimizer(bench_rets)
         bench_stddev = opt_engine.stddev(bench_weights)
-        #metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
-        #bench_stddev = metrics_engine.stddev()
 
         return bench_stddev
 
@@ -42,8 +40,6 @@ class AnalyticTools(object):
             # the benchmark mix of stocks and bonds
             bench_stddev = self._stock_bond_vol(
                 return_data[['acwi', 'bnd']], objective_selection)
-            import streamlit as st
-            st.write(bench_stddev)
             weights = opt_engine.optimize(obj_func, bench_stddev)
         else:
             weights = opt_engine.optimize(obj_func)
