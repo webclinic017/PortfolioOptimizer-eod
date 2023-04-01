@@ -142,7 +142,11 @@ def main():
 
     hld_title_cols = st.columns(3)
     with hld_title_cols[1]:
-        st.markdown("#### Recommended Holdings")
+        hld_writing = "Recommended Holdings"
+        hld_format = f'<p style="text-align: center; ' \
+                     f'font-size: 32px; font-weight: bold;">' \
+                     f'{hld_writing}</p>'
+        st.markdown(hld_format, unsafe_allow_html=True)
 
     # create a table of the recommended holdings
     # use HTML / CSS styling to create a table
