@@ -31,6 +31,8 @@ class AnalyticTools(object):
                          return_data: pd.DataFrame) -> pd.DataFrame:
         """Run the optimization based on the user's asset choices returns
             and the objective function selected by the user."""
+        import streamlit as st
+        st.write(user_return_data)
         opt_engine = Optimizer(user_return_data)
         obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
         if obj_func == 'max_return':
@@ -38,7 +40,6 @@ class AnalyticTools(object):
             # the benchmark mix of stocks and bonds
             bench_stddev = self._stock_bond_vol(
                 return_data[['acwi', 'bnd']], objective_selection)
-            import streamlit as st
             st.write(bench_stddev)
             weights = opt_engine.optimize(obj_func, bench_stddev)
         else:
