@@ -28,3 +28,21 @@ class PortfolioMetrics(object):
         stddev = np.std(np.dot(self.weights, self.returns.T))
 
         return stddev
+
+    def mean(self):
+        """
+        Calculate the mean.
+        :return mean: The mean of the portfolio.
+        """
+        mean = np.mean(np.dot(self.weights, self.returns.T))
+
+        return mean
+
+    def sharpe_ratio(self):
+        """
+        Calculate the Sharpe ratio.
+        :return sharpe_ratio: The Sharpe ratio of the portfolio.
+        """
+        sharpe_ratio = self.mean() / self.stddev()
+
+        return sharpe_ratio

@@ -109,30 +109,31 @@ def main():
         # run the optimization
         weights = analytics_engine.run_optimization(
             user_return_data, objective_selection, return_data)
-
-        ##############################################################
-        # ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
-
+        metrics = analytics_engine.portfolio_metrics(user_return_data, weights)
     else:
-        # if we have missing data, we need to impute it and run the analysis
-        # for each set of imputed data
+        # if we have missing data, we need to impute it and run the
+        # analysis for each set of imputed data
         imp_data = data_engine.pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
         imp_weights = []
+        imp_metrics = []
         for _ in range(gv.DEFAULT_IMPUTE_COUNT):
             user_return_data, _ = data_engine.get_user_data(
                 investment_selection, next(imp_data))
-            # run the optimization and record the weights
-            imp_weights.append(analytics_engine.run_optimization(
-                user_return_data, objective_selection, return_data))
-
-        # average the weights
+            # run the optimization and record the weights and metrics
+            curr_weights = analytics_engine.run_optimization(
+                user_return_data, objective_selection, return_data)
+            imp_weights.append(curr_weights)
+            curr_metrics = analytics_engine.portfolio_metrics(
+                user_return_data, curr_weights)
+            imp_metrics.append([v for v in curr_metrics.values()])
+        st.write(imp_metrics)
+        # average the weights and metrics
         weights = pd.DataFrame(imp_weights).mean()
+        metrics = pd.DataFrame(imp_metrics).mean()
 
-            ##############################################################
-            # RUN OPTIMIZATION / NEXT STEPS HERE
 
     ####################################################################
-    # Display Results
+    # Display Holdings
     ####################################################################
 
     st.write('')
@@ -161,6 +162,41 @@ def main():
         decimals=hld_table_decimal_places)
     # display the table
     format_engine.display_table(hld_table, hld_table_headers, 10)
+
+    ####################################################################
+    # Display Metrics
+    ####################################################################
+
+    st.write('')
+    metric_title_cols = st.columns(3)
+    with metric_title_cols[1]:
+        metric_writing = "Holdings Historical Metrics"
+        metric_format = f'<p style="text-align: center; ' \
+                        f'font-size: 26px; font-weight: bold;">' \
+                        f'{metric_writing}</p>'
+        st.markdown(metric_format, unsafe_allow_html=True)
+
+    # create a table of the recommended holdings
+    # use HTML / CSS styling to create a table
+    st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
+    # create the table
+    metric_table_index_width = 50
+    metric_table_title = 'Metric'
+    metric_table_headers = ['']
+    metric_table_line_items = analytics_engine.portfolio_metrics(weights)
+    hld_table_format_type = 'percent'
+    hld_table_decimal_places = 0
+    hld_table = format_engine.create_html_table(
+        hdl_table_index_width, hld_table_title, hld_table_headers,
+        hld_table_line_items, hld_table_format_type,
+        decimals=hld_table_decimal_places)
+    # display the table
+    format_engine.display_table(hld_table, hld_table_headers, 10)
+
+    ##############################################################
+    # ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
+
+
 
     ####################################################################
     # General Notes

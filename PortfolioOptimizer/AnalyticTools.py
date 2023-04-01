@@ -43,3 +43,14 @@ class AnalyticTools(object):
             weights = opt_engine.optimize(obj_func)
 
         return weights
+
+    def portfolio_metrics(self, returns: pd.DataFrame, weights: list) -> dict:
+        """Calculate the metrics for the portfolio."""
+        metrics_engine = PortfolioMetrics(returns, weights)
+        metrics = {
+            'Average': metrics_engine.mean(),
+            'Volatility': metrics_engine.stddev(),
+            'Sharpe Ratio': metrics_engine.sharpe_ratio()
+        }
+
+        return metrics
