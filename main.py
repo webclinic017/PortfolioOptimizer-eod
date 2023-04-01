@@ -167,6 +167,7 @@ def main():
     ####################################################################
 
     st.write('')
+    st.write('')
     metric_title_cols = st.columns(3)
     with metric_title_cols[1]:
         metric_writing = "Holdings Historical Metrics"

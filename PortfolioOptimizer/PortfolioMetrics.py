@@ -25,7 +25,7 @@ class PortfolioMetrics(object):
         Calculate the standard deviation.
         :return stddev: The standard deviation of the portfolio.
         """
-        stddev = np.std(np.dot(self.weights, self.returns.T))
+        stddev = np.std(np.dot(self.weights, self.returns.T)) * np.sqrt(252)
 
         return stddev
 
@@ -34,7 +34,7 @@ class PortfolioMetrics(object):
         Calculate the mean.
         :return mean: The mean of the portfolio.
         """
-        mean = np.mean(np.dot(self.weights, self.returns.T))
+        mean = np.mean(np.dot(self.weights, self.returns.T)) * 252
 
         return mean
 
