@@ -110,6 +110,7 @@ def main():
         weights = analytics_engine.run_optimization(
             user_return_data, objective_selection, return_data)
         metrics = analytics_engine.portfolio_metrics(user_return_data, weights)
+        st.write(metrics)
     else:
         # if we have missing data, we need to impute it and run the
         # analysis for each set of imputed data

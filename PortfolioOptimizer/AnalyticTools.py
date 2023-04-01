@@ -43,7 +43,6 @@ class AnalyticTools(object):
             import streamlit as st
             st.write(bench_stddev)
             weights = opt_engine.optimize(obj_func, bench_stddev)
-            st.write(opt_engine.stddev(weights))
         else:
             weights = opt_engine.optimize(obj_func)
 
