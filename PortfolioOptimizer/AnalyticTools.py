@@ -22,8 +22,10 @@ class AnalyticTools(object):
         bench_rets = return_data * 100
         # the weights are defined in the GlobalVariables file
         bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
-        metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
-        bench_stddev = metrics_engine.stddev()
+        opt_engine = Optimizer(bench_rets)
+        bench_stddev = opt_engine.stddev(bench_weights)
+        #metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
+        #bench_stddev = metrics_engine.stddev()
 
         return bench_stddev
 

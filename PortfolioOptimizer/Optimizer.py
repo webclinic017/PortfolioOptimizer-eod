@@ -60,7 +60,7 @@ class Optimizer(object):
         :param weights: The weights for the portfolio.
         :return stddev: The standard deviation of the portfolio.
         """
-        stddev = np.std(np.dot(weights, self.returns.T)) * np.sqrt(252)
+        stddev = np.std(np.dot(weights, self.returns.T))
 
         return stddev
 
@@ -86,9 +86,6 @@ class Optimizer(object):
             self.cons = (
                 {'type': 'eq', 'fun': lambda x: np.sum(x) - 1},
                 {'type': 'eq', 'fun': lambda x: self.stddev(x) - tgt_stddev})
-
-        import streamlit as st
-        st.write(tgt_stddev)
 
         # run the optimization
         results = minimize(func, self.x0, bounds=self.bnds,
