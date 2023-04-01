@@ -54,3 +54,13 @@ class AnalyticTools(object):
         }
 
         return metrics
+
+    def label_imp_metrics(self, metrics: pd.Series) -> dict:
+        """Label the imputed metrics."""
+        metrics = {
+            'Average': metrics.iloc[0],
+            'Volatility': metrics.iloc[1],
+            'Sharpe Ratio': metrics.iloc[2]
+        }
+
+        return metrics

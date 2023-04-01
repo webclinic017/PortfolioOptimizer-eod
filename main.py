@@ -126,12 +126,9 @@ def main():
             curr_metrics = analytics_engine.portfolio_metrics(
                 user_return_data, curr_weights)
             imp_metrics.append([v for v in curr_metrics.values()])
-        st.write(imp_metrics)
         # average the weights and metrics
         weights = pd.DataFrame(imp_weights).mean()
         metrics = pd.DataFrame(imp_metrics).mean()
-        st.write(metrics)
-
 
     ####################################################################
     # Display Holdings
@@ -184,8 +181,8 @@ def main():
     metric_table_index_width = 50
     metric_table_title = 'Metric'
     metric_table_headers = ['']
-    metric_table_line_items = analytics_engine.portfolio_metrics(weights)
-    hld_table_format_type = 'percent'
+    metric_table_line_items =
+    metric_table_format_type = 'percent'
     hld_table_decimal_places = 0
     hld_table = format_engine.create_html_table(
         hdl_table_index_width, hld_table_title, hld_table_headers,
