@@ -140,27 +140,27 @@ def main():
     # Display Results
     ####################################################################
 
-    st.markdown("#### Recommended Holdings")
+    hld_title_cols = st.columns(3)
+    with hld_title_cols[1]:
+        st.markdown("#### Recommended Holdings")
 
-    holdings_cols = st.columns([3, 7])
-    with holdings_cols[0]:
-        # create a table of the recommended holdings
-        # use HTML / CSS styling to create a table
-        st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
-        # create the table
-        hdl_table_index_width = 50
-        hld_table_title = 'Asset Classes'
-        hld_table_headers = ['Weight (%)']
-        hld_table_line_items = {a: [w] for a, w in zip(investment_selection,
-                                                       weights)}
-        hld_table_format_type = 'percent'
-        hld_table_decimal_places = 0
-        hld_table = format_engine.create_html_table(
-            hdl_table_index_width, hld_table_title, hld_table_headers,
-            hld_table_line_items, hld_table_format_type,
-            decimals=hld_table_decimal_places)
-        # display the table
-        format_engine.display_table(hld_table, hld_table_headers, 10)
+    # create a table of the recommended holdings
+    # use HTML / CSS styling to create a table
+    st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
+    # create the table
+    hdl_table_index_width = 50
+    hld_table_title = 'Asset Classes'
+    hld_table_headers = ['Weight (%)']
+    hld_table_line_items = {a: [w] for a, w in zip(investment_selection,
+                                                   weights)}
+    hld_table_format_type = 'percent'
+    hld_table_decimal_places = 0
+    hld_table = format_engine.create_html_table(
+        hdl_table_index_width, hld_table_title, hld_table_headers,
+        hld_table_line_items, hld_table_format_type,
+        decimals=hld_table_decimal_places)
+    # display the table
+    format_engine.display_table(hld_table, hld_table_headers, 10)
 
     ####################################################################
     # General Notes
