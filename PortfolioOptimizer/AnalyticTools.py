@@ -18,6 +18,7 @@ class AnalyticTools(object):
                        objective_selection: str) -> float:
         """Calculate the volatility of the stock and bond portfolio given
             a desired weight in each."""
+        # multiply by 100 since the optimizer needs higher values to work
         bench_rets = return_data * 100
         # the weights are defined in the GlobalVariables file
         bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
@@ -31,16 +32,14 @@ class AnalyticTools(object):
                          return_data: pd.DataFrame) -> pd.DataFrame:
         """Run the optimization based on the user's asset choices returns
             and the objective function selected by the user."""
-        import streamlit as st
-        st.write(user_return_data)
-        opt_engine = Optimizer(user_return_data)
+        # multiply by 100 since the optimizer needs higher values to work
+        opt_engine = Optimizer(user_return_data * 100)
         obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
         if obj_func == 'max_return':
             # if we want the max return, we need to find the vol of
             # the benchmark mix of stocks and bonds
             bench_stddev = self._stock_bond_vol(
                 return_data[['acwi', 'bnd']], objective_selection)
-            st.write(bench_stddev)
             weights = opt_engine.optimize(obj_func, bench_stddev)
         else:
             weights = opt_engine.optimize(obj_func)
