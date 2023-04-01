@@ -159,7 +159,8 @@ def main():
             hdl_table_index_width, hld_table_title, hld_table_headers,
             hld_table_line_items, hld_table_format_type,
             decimals=hld_table_decimal_places)
-        st.markdown(hld_table, unsafe_allow_html=True)
+        # display the table
+        format_engine.display_table(hld_table, hld_table_headers, 10)
 
     ####################################################################
     # General Notes

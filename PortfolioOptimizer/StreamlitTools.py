@@ -305,3 +305,37 @@ class StreamlitTools(object):
         html_table += "</table>"
 
         return html_table
+
+    def display_table(self, table: str, col_headers: list,
+                      cols_for_center: int) -> Union[None, list]:
+        """
+        Displays the table in the app.
+        :param table: The HTML table as a string.
+        :param col_headers: The column headers for the table, which we
+            need as a way to determine the length of the table.
+        :param cols_for_center: If we have less than this number of
+            columns, we center the table on the page, otherwise we use the
+            full width of the page.
+        :return col_list: The list of the column widths, so we can use it
+            for other displays if necessary.
+        """
+        # determine the width of the table, we want it to be 100% of the
+        # width of the page if the number of years is at least 19, but
+        # smaller if not (we choose 19 since we also have the month names to
+        # get 20 total and make the math easier)
+        # we also use 98 as the highest number since we need to have at least
+        # 1 for each margin
+        if len(col_headers) >= cols_for_center:
+            st.markdown(table, unsafe_allow_html=True)
+        else:
+            table_width = 100 - (cols_for_center - len(col_headers)) * (100 / (
+                    cols_for_center + 1))
+            margin_width = int(100 - table_width) / 2
+            col_widths = [margin_width, table_width, margin_width]
+
+            # display the table
+            table_col1, table_col2, table_col3 = st.columns(col_widths)
+            with table_col2:
+                st.markdown(table, unsafe_allow_html=True)
+
+            return col_widths
