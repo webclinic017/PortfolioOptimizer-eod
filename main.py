@@ -3,6 +3,7 @@ Runs the portfolio optimizer.
 """
 
 from PortfolioOptimizer import GlobalVariables as gv
+from PortfolioOptimizer.AnalyticTools import AnalyticTools
 from PortfolioOptimizer.DataTools import DataTools
 from PortfolioOptimizer.Optimizer import Optimizer
 from PortfolioOptimizer.PortfolioMetrics import PortfolioMetrics
@@ -35,6 +36,11 @@ def main():
                            f'font-size: 30px; font-weight: bold;">' \
                            f'{title_writing}</p>'
     st.sidebar.markdown(sidebar_title_format, unsafe_allow_html=True)
+
+    # define tools for use throughout
+    data_engine = DataTools()
+    analytics_engine = AnalyticTools()
+    format_engine = StreamlitTools()
 
     ####################################################################
     # User Options
@@ -88,36 +94,34 @@ def main():
     ####################################################################
 
     # pull the data
-    data_engine = DataTools()
     tables = data_engine.pull_ticker_tables()
     return_data = data_engine.pull_return_data(tables)
-
-    st.write(return_data)
 
     # get data for the selected investments
     user_return_data, any_missing = data_engine.get_user_data(
         investment_selection, return_data)
+
+    ####################################################################
+    # Run Analysis
+    ####################################################################
 
     # if we don't have missing data, we can just run the analysis
     if not any_missing:
         opt_engine = Optimizer(user_return_data)
         obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
         if obj_func == 'max_return':
-            bench_rets = return_data[['acwi', 'bnd']] * 100
-            bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
-            metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
-            bench_stddev = metrics_engine.stddev()
-            st.write(bench_stddev)
+            # if we want the max return, we need to find the vol of
+            # the benchmark mix of stocks and bonds
+            bench_stddev = analytics_engine.stock_bond_vol(
+                return_data[['acwi', 'bnd']], objective_selection)
             weights = opt_engine.optimize(obj_func, bench_stddev)
         else:
             weights = opt_engine.optimize(obj_func)
 
-        st.write(weights)
-        st.write(opt_engine.stddev(weights))
-
         ##############################################################
-        # DEAL WITH OPTIMIZATION NOT BEING SUCCESSFUL,
+        # DISPLAY HOLDINGS,
         # SHOULD RETURNS BE BASED ON THE COVARIANCE MATRIX???,
+        # ALLOW USER TO RUN BACKTEST,
         # IMPUTATION/BOOTSTRAPPING
 
     else:
@@ -133,6 +137,32 @@ def main():
             # RUN OPTIMIZATION / NEXT STEPS HERE
 
     ####################################################################
+    # Display Results
+    ####################################################################
+
+    st.markdown("#### Recommended Holdings")
+
+    holdings_cols = st.columns([3, 7])
+    with holdings_cols[0]:
+        # create a table of the recommended holdings
+        # use HTML / CSS styling to create a table
+        st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
+        # create the table
+        hld_table_title = 'Asset Classes'
+        hld_table_headers = ['Weight']
+        hld_table_line_items = {a: w for a, w in zip(investment_selection,
+                                                     weights)}
+        hld_table_indent = []
+        hld_table_underline = []
+        hld_table_format_type = 'percent'
+        hld_table_decimal_places = 0
+        hld_table = format_engine.create_html_table(
+            hld_table_title, hld_table_headers, hld_table_line_items,
+            hld_table_indent, hld_table_underline, hld_table_format_type,
+            decimals=hld_table_decimal_places)
+        st.markdown(hld_table, unsafe_allow_html=True)
+
+    ####################################################################
     # General Notes
     ####################################################################
 
@@ -140,9 +170,7 @@ def main():
 
     st.markdown("##### Investment Choices")
     # use HTML / CSS styling to create a table
-    format_engine = StreamlitTools()
-    html_table_style = format_engine.create_html_table_style()
-    st.markdown(html_table_style, unsafe_allow_html=True)
+    st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
     # create the table
     inv_table_title = 'Asset Classes'
     inv_table_headers = ['ETF Tickers', 'ETF Names', 'ETF Fees*']

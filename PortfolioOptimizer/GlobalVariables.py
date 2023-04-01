@@ -62,6 +62,29 @@ DEFAULT_OPTIMIZER_OPTIONS = ['Bootstrapping']
 # Imputation defaults
 DEFAULT_IMPUTE_COUNT = 5
 
-
-
+# Display
+CSS_TABLE_STYLE = '''
+<style>
+    td:hover {
+        background-color: palegreen;
+    }
+    tr:hover {
+        background-color: aliceblue;
+    }
+    table, th, tr, td
+    {
+        border: 0;
+    }
+    tr.border_bottom td {
+        border-bottom: 1px solid black;
+    }
+</style>
+'''
+# for no borders
+'''
+    table, th, tr, td
+    {
+        border: 0 !important;
+    }
+'''
 

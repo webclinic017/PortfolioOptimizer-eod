@@ -20,48 +20,7 @@ class StreamlitTools(object):
         """
         Args:
         """
-
-    def create_html_table_style(self):
-        """
-        Creates a string to be used to style a financial statement with
-        CSS. This is what is used in the <style> ... </style> section
-        of html/css.
-
-        Args:
-            N/A
-
-        Returns:
-            financial_statement_style(string): The string with the
-                styling.
-        """
-
-        financial_statement_style = '''
-            <style>
-                td:hover {
-                    background-color: palegreen;
-                }
-                tr:hover {
-                    background-color: aliceblue;
-                }
-                table, th, tr, td
-                {
-                    border: 0;
-                }
-                tr.border_bottom td {
-                    border-bottom: 1px solid black;
-                }
-            </style>
-            '''
-
-        # for no borders
-        '''
-            table, th, tr, td
-            {
-                border: 0 !important;
-            }
-        '''
-
-        return financial_statement_style
+        pass
 
     def format_int(self, numbers):
         """
