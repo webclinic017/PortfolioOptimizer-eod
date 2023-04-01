@@ -6,7 +6,6 @@ from PortfolioOptimizer import GlobalVariables as gv
 from PortfolioOptimizer.AnalyticTools import AnalyticTools
 from PortfolioOptimizer.DataTools import DataTools
 from PortfolioOptimizer.Optimizer import Optimizer
-from PortfolioOptimizer.PortfolioMetrics import PortfolioMetrics
 from PortfolioOptimizer.StreamlitTools import StreamlitTools
 
 import streamlit as st
@@ -107,16 +106,9 @@ def main():
 
     # if we don't have missing data, we can just run the analysis
     if not any_missing:
-        opt_engine = Optimizer(user_return_data)
-        obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
-        if obj_func == 'max_return':
-            # if we want the max return, we need to find the vol of
-            # the benchmark mix of stocks and bonds
-            bench_stddev = analytics_engine.stock_bond_vol(
-                return_data[['acwi', 'bnd']], objective_selection)
-            weights = opt_engine.optimize(obj_func, bench_stddev)
-        else:
-            weights = opt_engine.optimize(obj_func)
+        # run the optimization
+        weights = analytics_engine.run_optimization(
+            user_return_data, objective_selection, return_data)
 
         ##############################################################
         # DISPLAY HOLDINGS,
