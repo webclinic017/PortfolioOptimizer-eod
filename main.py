@@ -144,7 +144,7 @@ def main():
     with hld_title_cols[1]:
         hld_writing = "Recommended Holdings"
         hld_format = f'<p style="text-align: center; ' \
-                     f'font-size: 32px; font-weight: bold;">' \
+                     f'font-size: 26px;">' \
                      f'{hld_writing}</p>'
         st.markdown(hld_format, unsafe_allow_html=True)
 
