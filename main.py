@@ -128,7 +128,8 @@ def main():
             imp_metrics.append([v for v in curr_metrics.values()])
         # average the weights and metrics
         weights = pd.DataFrame(imp_weights).mean()
-        metrics = pd.DataFrame(imp_metrics).mean()
+        avg_metrics = pd.DataFrame(imp_metrics).mean()
+        metrics = analytics_engine.label_imp_metrics(avg_metrics)
 
     ####################################################################
     # Display Holdings
@@ -181,15 +182,15 @@ def main():
     metric_table_index_width = 50
     metric_table_title = 'Metric'
     metric_table_headers = ['']
-    metric_table_line_items =
+    metric_table_line_items = metrics
     metric_table_format_type = 'percent'
-    hld_table_decimal_places = 0
-    hld_table = format_engine.create_html_table(
-        hdl_table_index_width, hld_table_title, hld_table_headers,
-        hld_table_line_items, hld_table_format_type,
-        decimals=hld_table_decimal_places)
+    metric_table_decimal_places = 1
+    metric_table = format_engine.create_html_table(
+        metric_table_index_width, metric_table_title, metric_table_headers,
+        metric_table_line_items, metric_table_format_type,
+        decimals=metric_table_decimal_places)
     # display the table
-    format_engine.display_table(hld_table, hld_table_headers, 10)
+    format_engine.display_table(metric_table, metric_table_headers, 10)
 
     ##############################################################
     # ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
