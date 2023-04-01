@@ -148,17 +148,16 @@ def main():
         # use HTML / CSS styling to create a table
         st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
         # create the table
+        hdl_table_index_width = 50
         hld_table_title = 'Asset Classes'
         hld_table_headers = ['Weight (%)']
         hld_table_line_items = {a: [w] for a, w in zip(investment_selection,
                                                        weights)}
-        hld_table_indent = []
-        hld_table_underline = []
         hld_table_format_type = 'percent'
         hld_table_decimal_places = 0
         hld_table = format_engine.create_html_table(
-            hld_table_title, hld_table_headers, hld_table_line_items,
-            hld_table_indent, hld_table_underline, hld_table_format_type,
+            hdl_table_index_width, hld_table_title, hld_table_headers,
+            hld_table_line_items, hld_table_format_type,
             decimals=hld_table_decimal_places)
         st.markdown(hld_table, unsafe_allow_html=True)
 
@@ -175,16 +174,15 @@ def main():
     # use HTML / CSS styling to create a table
     st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
     # create the table
+    inv_table_index_width = 25
     inv_table_title = 'Asset Classes'
     inv_table_headers = ['ETF Tickers', 'ETF Names', 'ETF Fees*']
     inv_table_line_items = gv.SECURITY_MAPPING
-    inv_table_indent = []
-    inv_table_underline = []
     inv_table_format_type = 'percent'
     inv_table_decimal_places = 1
     inv_table = format_engine.create_html_table(
-        inv_table_title, inv_table_headers, inv_table_line_items,
-        inv_table_indent, inv_table_underline, inv_table_format_type,
+        inv_table_index_width, inv_table_title, inv_table_headers,
+        inv_table_line_items, inv_table_format_type,
         decimals=inv_table_decimal_places)
     st.markdown(inv_table, unsafe_allow_html=True)
     # add a note about the ETFs
