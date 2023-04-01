@@ -150,8 +150,8 @@ def main():
         # create the table
         hld_table_title = 'Asset Classes'
         hld_table_headers = ['Weight']
-        hld_table_line_items = {a: w for a, w in zip(investment_selection,
-                                                     weights)}
+        hld_table_line_items = {a: [w] for a, w in zip(investment_selection,
+                                                       weights)}
         hld_table_indent = []
         hld_table_underline = []
         hld_table_format_type = 'percent'
