@@ -43,12 +43,3 @@ class AnalyticTools(object):
             weights = opt_engine.optimize(obj_func)
 
         return weights
-
-    def average_weights(self, imp_weights: list) -> pd.DataFrame:
-        """Calculate the average weights for the portfolio."""
-        avg_weights = pd.DataFrame(imp_weights).mean()
-        import streamlit as st
-        st.write(avg_weights)
-        avg_weights = avg_weights / avg_weights.sum()
-
-        return avg_weights
