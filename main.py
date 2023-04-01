@@ -166,6 +166,9 @@ def main():
     # General Notes
     ####################################################################
 
+    st.write('')
+    st.write('---')
+
     st.markdown("#### General Notes")
 
     st.markdown("##### Investment Choices")
