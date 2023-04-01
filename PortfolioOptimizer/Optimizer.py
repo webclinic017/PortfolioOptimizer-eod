@@ -60,7 +60,7 @@ class Optimizer(object):
         :param weights: The weights for the portfolio.
         :return stddev: The standard deviation of the portfolio.
         """
-        stddev = np.std(np.dot(self.weights, self.returns.T)) * np.sqrt(252)
+        stddev = np.std(np.dot(weights, self.returns.T)) * np.sqrt(252)
 
         return stddev
 
