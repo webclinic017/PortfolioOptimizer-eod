@@ -110,6 +110,8 @@ def main():
         weights = analytics_engine.run_optimization(
             user_return_data, objective_selection, return_data)
 
+        st.write(type(weights))
+
         ##############################################################
         # DISPLAY HOLDINGS,
         # SHOULD RETURNS BE BASED ON THE COVARIANCE MATRIX???,
@@ -123,7 +125,9 @@ def main():
         for _ in range(gv.DEFAULT_IMPUTE_COUNT):
             user_return_data, _ = data_engine.get_user_data(
                 investment_selection, next(imp_data))
-            st.write(user_return_data)
+            # run the optimization
+            weights = analytics_engine.run_optimization(
+                user_return_data, objective_selection, return_data)
 
             ##############################################################
             # RUN OPTIMIZATION / NEXT STEPS HERE
