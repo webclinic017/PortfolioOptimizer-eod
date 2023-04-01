@@ -130,6 +130,7 @@ def main():
         # average the weights and metrics
         weights = pd.DataFrame(imp_weights).mean()
         metrics = pd.DataFrame(imp_metrics).mean()
+        st.write(metrics)
 
 
     ####################################################################
