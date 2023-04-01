@@ -123,6 +123,7 @@ def main():
             curr_weights = analytics_engine.run_optimization(
                 user_return_data, objective_selection, return_data)
             imp_weights.append(curr_weights)
+            st.write(curr_weights)
             curr_metrics = analytics_engine.portfolio_metrics(
                 user_return_data, curr_weights)
             imp_metrics.append([v[0] for v in curr_metrics.values()])
@@ -194,7 +195,7 @@ def main():
     format_engine.display_table(metric_table, metric_table_headers, 10)
 
     ##############################################################
-    # ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
+    # ADD BENCHMARK METRICS, ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
 
 
 
