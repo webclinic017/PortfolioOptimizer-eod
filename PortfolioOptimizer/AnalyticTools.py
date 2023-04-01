@@ -48,9 +48,9 @@ class AnalyticTools(object):
         """Calculate the metrics for the portfolio."""
         metrics_engine = PortfolioMetrics(returns, weights)
         metrics = {
-            'Average': metrics_engine.mean(),
-            'Volatility': metrics_engine.stddev(),
-            'Sharpe Ratio': metrics_engine.sharpe_ratio()
+            'Average': [metrics_engine.mean()],
+            'Volatility': [metrics_engine.stddev()],
+            'Sharpe Ratio': [metrics_engine.sharpe_ratio()]
         }
 
         return metrics
@@ -58,9 +58,9 @@ class AnalyticTools(object):
     def label_imp_metrics(self, metrics: pd.Series) -> dict:
         """Label the imputed metrics."""
         metrics = {
-            'Average': metrics.iloc[0],
-            'Volatility': metrics.iloc[1],
-            'Sharpe Ratio': metrics.iloc[2]
+            'Average': [metrics.iloc[0]],
+            'Volatility': [metrics.iloc[1]],
+            'Sharpe Ratio': [metrics.iloc[2]]
         }
 
         return metrics

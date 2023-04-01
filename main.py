@@ -125,7 +125,7 @@ def main():
             imp_weights.append(curr_weights)
             curr_metrics = analytics_engine.portfolio_metrics(
                 user_return_data, curr_weights)
-            imp_metrics.append([v for v in curr_metrics.values()])
+            imp_metrics.append([v[0] for v in curr_metrics.values()])
         # average the weights and metrics
         weights = pd.DataFrame(imp_weights).mean()
         avg_metrics = pd.DataFrame(imp_metrics).mean()
