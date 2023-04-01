@@ -124,6 +124,7 @@ def main():
         for _ in range(gv.DEFAULT_IMPUTE_COUNT):
             user_return_data, _ = data_engine.get_user_data(
                 investment_selection, next(imp_data))
+            st.write(user_return_data)
             # run the optimization and record the weights
             imp_weights.append(analytics_engine.run_optimization(
                 user_return_data, objective_selection, return_data))
