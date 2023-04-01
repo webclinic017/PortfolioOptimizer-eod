@@ -49,7 +49,7 @@ class Optimizer(object):
         :return neg_avg_return: The negative of the average return since
             we want to maximize it, but are using a minimizer.
         """
-        avg = np.average(np.dot(weights, self.returns.T))
+        avg = np.mean(np.dot(weights, self.returns.T))
         neg_avg_return = -1 * avg
 
         return neg_avg_return
