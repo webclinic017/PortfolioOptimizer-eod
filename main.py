@@ -107,8 +107,6 @@ def main():
     # if we don't have missing data, we can just run the analysis
     if not any_missing:
         # run the optimization
-        st.write(objective_selection)
-        st.write(return_data)
         weights = analytics_engine.run_optimization(
             user_return_data, objective_selection, return_data)
         metrics = analytics_engine.portfolio_metrics(user_return_data, weights)

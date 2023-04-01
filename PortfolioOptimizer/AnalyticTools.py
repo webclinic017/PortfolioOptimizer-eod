@@ -38,6 +38,8 @@ class AnalyticTools(object):
             # the benchmark mix of stocks and bonds
             bench_stddev = self._stock_bond_vol(
                 return_data[['acwi', 'bnd']], objective_selection)
+            import streamlit as st
+            st.write(bench_stddev)
             weights = opt_engine.optimize(obj_func, bench_stddev)
         else:
             weights = opt_engine.optimize(obj_func)
