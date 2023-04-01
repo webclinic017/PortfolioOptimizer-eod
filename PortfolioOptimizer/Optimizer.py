@@ -87,6 +87,9 @@ class Optimizer(object):
                 {'type': 'eq', 'fun': lambda x: np.sum(x) - 1},
                 {'type': 'eq', 'fun': lambda x: self.stddev(x) - tgt_stddev})
 
+        import streamlit as st
+        st.write(tgt_stddev)
+
         # run the optimization
         results = minimize(func, self.x0, bounds=self.bnds,
                            constraints=self.cons)
