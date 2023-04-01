@@ -110,8 +110,6 @@ def main():
         weights = analytics_engine.run_optimization(
             user_return_data, objective_selection, return_data)
 
-        st.write(type(weights))
-
         ##############################################################
         # DISPLAY HOLDINGS,
         # SHOULD RETURNS BE BASED ON THE COVARIANCE MATRIX???,
@@ -122,12 +120,17 @@ def main():
         # if we have missing data, we need to impute it and run the analysis
         # for each set of imputed data
         imp_data = data_engine.pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
+        imp_weights = []
         for _ in range(gv.DEFAULT_IMPUTE_COUNT):
             user_return_data, _ = data_engine.get_user_data(
                 investment_selection, next(imp_data))
             # run the optimization
-            weights = analytics_engine.run_optimization(
+            curr_weights = analytics_engine.run_optimization(
                 user_return_data, objective_selection, return_data)
+            imp_weights.append(curr_weights)
+
+        st.write(imp_weights)
+        # average the weights
 
             ##############################################################
             # RUN OPTIMIZATION / NEXT STEPS HERE
