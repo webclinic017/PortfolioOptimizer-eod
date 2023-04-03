@@ -188,7 +188,7 @@ def main():
     # create the table
     metric_table_index_width = 50
     metric_table_title = 'Metric'
-    metric_table_headers = ['']
+    metric_table_headers = format_engine.get_metric_headers(obj_func)
     metric_table_line_items = metrics
     metric_table_format_type = ['percent', 'percent', 'float']
     metric_table_decimal_places = 1

@@ -339,3 +339,14 @@ class StreamlitTools(object):
                 st.markdown(table, unsafe_allow_html=True)
 
             return col_widths
+
+
+    def get_metric_headers(self, obj_func: str) -> list:
+        """Gets the headers for the metrics table depending on whether we
+            have a benchmark or not."""
+        if obj_func == 'max_return':
+            headers = ['Portfolio', 'Benchmark']
+        else:
+            headers = ['Portfolio']
+
+        return headers
