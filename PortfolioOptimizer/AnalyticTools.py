@@ -7,6 +7,7 @@ from PortfolioOptimizer import GlobalVariables as gv
 from PortfolioOptimizer.Optimizer import Optimizer
 from PortfolioOptimizer.PortfolioMetrics import PortfolioMetrics
 
+import numpy as np
 import pandas as pd
 
 
@@ -106,18 +107,17 @@ class AnalyticTools(object):
     def average_metrics(self, imp_metrics: dict) -> dict:
         """Label the imputed metrics."""
         metrics = {
-            'Average': [imp_metrics['Average'].mean()],
-            'Volatility': [imp_metrics['Volatility'].mean()],
-            'Sharpe Ratio': [imp_metrics['Sharpe Ratio'].mean()]
+            'Average': [np.mean(imp_metrics['Average'])],
+            'Volatility': [np.mean(imp_metrics['Volatility'])],
+            'Sharpe Ratio': [np.mean(imp_metrics['Sharpe Ratio'])]
         }
 
         # include the benchmark metrics if they exist
         if 'Bench Average' in imp_metrics:
-            metrics['Average'] = metrics['Average'].append(
-                imp_metrics['Bench Average'].mean())
-            metrics['Volatility'] = metrics['Volatility'].append(
-                imp_metrics['Bench Volatility'].mean())
-            metrics['Sharpe Ratio'] = metrics['Sharpe Ratio'].append(
-                imp_metrics['Bench Sharpe Ratio'].mean())
+            metrics['Average'].append(np.mean(imp_metrics['Bench Average']))
+            metrics['Volatility'].append(
+                np.mean(imp_metrics['Bench Volatility']))
+            metrics['Sharpe Ratio'].append(
+                np.mean(imp_metrics['Bench Sharpe Ratio']))
 
         return metrics
