@@ -69,6 +69,8 @@ class AnalyticTools(object):
             max_return.
         """
         metrics_engine = PortfolioMetrics(port_returns, weights)
+        import streamlit as st
+        st.write(metrics)
         if metrics:
             metrics['Average'] = metrics['Average'].append(
                 metrics_engine.mean())
