@@ -72,12 +72,9 @@ class AnalyticTools(object):
         import streamlit as st
         st.write(metrics)
         if metrics:
-            metrics['Average'] = metrics['Average'].append(
-                metrics_engine.mean())
-            metrics['Volatility'] = metrics['Volatility'].append(
-                metrics_engine.stddev())
-            metrics['Sharpe Ratio'] = metrics['Sharpe Ratio'].append(
-                metrics_engine.sharpe_ratio())
+            metrics['Average'].append(metrics_engine.mean())
+            metrics['Volatility'].append(metrics_engine.stddev())
+            metrics['Sharpe Ratio'].append(metrics_engine.sharpe_ratio())
         else:
             metrics = {
                 'Average': [metrics_engine.mean()],
@@ -93,14 +90,11 @@ class AnalyticTools(object):
             bench_metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
             # then calculate the metrics for the benchmark
             if 'Bench Average' in metrics:
-                metrics['Bench Average'] = metrics['Bench Average'].append(
-                    bench_metrics_engine.mean())
-                metrics['Bench Volatility'] = \
-                    metrics['Bench Volatility'].append(
-                        bench_metrics_engine.stddev())
-                metrics['Bench Sharpe Ratio'] = \
-                    metrics['Bench Sharpe Ratio'].append(
-                        bench_metrics_engine.sharpe_ratio())
+                metrics['Bench Average'].append(bench_metrics_engine.mean())
+                metrics['Bench Volatility'].append(
+                    bench_metrics_engine.stddev())
+                metrics['Bench Sharpe Ratio'].append(
+                    bench_metrics_engine.sharpe_ratio())
             else:
                 metrics['Bench Average'] = [bench_metrics_engine.mean()],
                 metrics['Bench Volatility'] = [bench_metrics_engine.stddev()],
