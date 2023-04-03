@@ -104,32 +104,38 @@ def main():
     # Run Analysis
     ####################################################################
 
+    # we need to know the objective function throughout
+    obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
     # if we don't have missing data, we can just run the analysis
     if not any_missing:
         # run the optimization
         weights = analytics_engine.run_optimization(
-            user_return_data, objective_selection, return_data)
-        metrics = analytics_engine.portfolio_metrics(user_return_data, weights)
+            user_return_data, obj_func, objective_selection, return_data)
+        metrics = analytics_engine.portfolio_metrics(
+            user_return_data, weights, obj_func, objective_selection,
+            return_data, {})
     else:
         # if we have missing data, we need to impute it and run the
         # analysis for each set of imputed data
         imp_data = data_engine.pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
         imp_weights = []
-        imp_metrics = []
+        imp_metrics = {}
         for _ in range(gv.DEFAULT_IMPUTE_COUNT):
             user_return_data, _ = data_engine.get_user_data(
                 investment_selection, next(imp_data))
             # run the optimization and record the weights and metrics
             curr_weights = analytics_engine.run_optimization(
-                user_return_data, objective_selection, return_data)
+                user_return_data, obj_func, objective_selection, return_data)
             imp_weights.append(curr_weights)
-            curr_metrics = analytics_engine.portfolio_metrics(
-                user_return_data, curr_weights)
-            imp_metrics.append([v[0] for v in curr_metrics.values()])
+            imp_metrics = analytics_engine.portfolio_metrics(
+                user_return_data, curr_weights, obj_func, objective_selection,
+                return_data, imp_metrics)
         # average the weights and metrics
         weights = pd.DataFrame(imp_weights).mean()
-        avg_metrics = pd.DataFrame(imp_metrics).mean()
-        metrics = analytics_engine.label_imp_metrics(avg_metrics)
+        metrics = analytics_engine.average_metrics(imp_metrics)
+
+    st.write(weights)
+    st.write(metrics)
 
     ####################################################################
     # Display Holdings
