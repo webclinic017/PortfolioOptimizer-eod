@@ -134,9 +134,6 @@ def main():
         weights = pd.DataFrame(imp_weights).mean()
         metrics = analytics_engine.average_metrics(imp_metrics)
 
-    st.write(weights)
-    st.write(metrics)
-
     ####################################################################
     # Display Holdings
     ####################################################################
