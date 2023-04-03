@@ -98,10 +98,10 @@ class AnalyticTools(object):
                 metrics['Bench Sharpe Ratio'].append(
                     bench_metrics_engine.sharpe_ratio())
             else:
-                metrics['Bench Average'] = [bench_metrics_engine.mean()],
-                metrics['Bench Volatility'] = [bench_metrics_engine.stddev()],
-                metrics['Bench Sharpe Ratio'] = [
-                    bench_metrics_engine.sharpe_ratio()]
+                metrics['Bench Average'] = bench_metrics_engine.mean(),
+                metrics['Bench Volatility'] = bench_metrics_engine.stddev(),
+                metrics['Bench Sharpe Ratio'] = \
+                    bench_metrics_engine.sharpe_ratio()
 
         return metrics
 
