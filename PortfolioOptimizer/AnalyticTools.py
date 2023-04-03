@@ -81,6 +81,9 @@ class AnalyticTools(object):
                 'Sharpe Ratio': [metrics_engine.sharpe_ratio()]
             }
 
+        import streamlit as st
+        st.write(metrics)
+
         if obj_func == 'max_return':
             # if we want the max return, get the benchmark based on the
             # weights of the stocks and bonds
