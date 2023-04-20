@@ -112,9 +112,13 @@ def main():
         # run the optimization
         weights = analytics_engine.run_optimization(
             user_return_data, obj_func, objective_selection, return_data)
-        metrics = analytics_engine.portfolio_metrics(
-            user_return_data, weights, obj_func, objective_selection,
-            return_data, {})
+        try:
+            metrics = analytics_engine.portfolio_metrics(
+                user_return_data, weights, obj_func, objective_selection,
+                return_data, {})
+        # we need to handle if all the weights are None
+        except TypeError:
+            metrics = None
     else:
         # if we have missing data, we need to impute it and run the
         # analysis for each set of imputed data
@@ -139,7 +143,7 @@ def main():
         try:
             weights = pd.DataFrame(imp_weights).mean()
             metrics = analytics_engine.average_metrics(imp_metrics)
-        # we need to handle if all of the weights are None
+        # we need to handle if all the weights are None
         except TypeError:
             weights = None
             metrics = None
