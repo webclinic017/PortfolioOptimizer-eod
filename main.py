@@ -157,6 +157,7 @@ def main():
                  "investments. Please try again with a different set of "
                  "investments or choose an optimization that has less "
                  "weight in stocks, or is Max Sharpe Ratio.")
+        st.stop()
 
     ####################################################################
     # Display Holdings
