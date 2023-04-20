@@ -157,84 +157,86 @@ def main():
                  "investments. Please try again with a different set of "
                  "investments or choose an optimization that has less "
                  "weight in stocks, or is Max Sharpe Ratio.")
-        st.stop()
 
-    ####################################################################
-    # Display Holdings
-    ####################################################################
 
-    st.write('')
-    hld_title_cols = st.columns(3)
-    with hld_title_cols[1]:
-        hld_writing = "Recommended Holdings"
-        hld_format = f'<p style="text-align: center; ' \
-                     f'font-size: 26px; font-weight: bold;">' \
-                     f'{hld_writing}</p>'
-        st.markdown(hld_format, unsafe_allow_html=True)
+    else:
 
-    # create a table of the recommended holdings
-    # use HTML / CSS styling to create a table
-    st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
-    # create the table
-    hdl_table_index_width = 50
-    hld_table_title = 'Asset Classes'
-    hld_table_headers = ['Weight (%)']
-    hld_table_line_items = {a: [w] for a, w in zip(investment_selection,
-                                                   weights)}
-    # add cash if the weights don't add up to 100%
-    if not np.isclose(weights.sum(), 1):
-        hld_table_line_items['Cash'] = [1 - weights.sum()]
-    hld_table_format_type = 'percent'
-    hld_table_decimal_places = 0
-    hld_table = format_engine.create_html_table(
-        hdl_table_index_width, hld_table_title, hld_table_headers,
-        hld_table_line_items, hld_table_format_type,
-        decimals=hld_table_decimal_places)
-    # display the table
-    format_engine.display_table(hld_table, hld_table_headers, 10)
+        ####################################################################
+        # Display Holdings
+        ####################################################################
 
-    # if the weights don't add up to 100%, tell the user why
-    if not np.isclose(weights.sum(), 1):
         st.write('')
-        st.write("The weights do not add up to 100% because the "
-                 "benchmark volatility is low compared to the volatility "
-                 "of the investments. So the weight is scaled down and "
-                 "includes cash, so that the volatility of the portfolio "
-                 "matches the volatility of the benchmark. If you would like "
-                 "no cash, you must either choose lower volatility "
-                 "investments or choose an optimization that has more weight "
-                 "in stocks, or is Max Sharpe Ratio.")
+        hld_title_cols = st.columns(3)
+        with hld_title_cols[1]:
+            hld_writing = "Recommended Holdings"
+            hld_format = f'<p style="text-align: center; ' \
+                         f'font-size: 26px; font-weight: bold;">' \
+                         f'{hld_writing}</p>'
+            st.markdown(hld_format, unsafe_allow_html=True)
 
-    ####################################################################
-    # Display Metrics
-    ####################################################################
+        # create a table of the recommended holdings
+        # use HTML / CSS styling to create a table
+        st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
+        # create the table
+        hdl_table_index_width = 50
+        hld_table_title = 'Asset Classes'
+        hld_table_headers = ['Weight (%)']
+        hld_table_line_items = {a: [w] for a, w in zip(investment_selection,
+                                                       weights)}
+        # add cash if the weights don't add up to 100%
+        if not np.isclose(weights.sum(), 1):
+            hld_table_line_items['Cash'] = [1 - weights.sum()]
+        hld_table_format_type = 'percent'
+        hld_table_decimal_places = 0
+        hld_table = format_engine.create_html_table(
+            hdl_table_index_width, hld_table_title, hld_table_headers,
+            hld_table_line_items, hld_table_format_type,
+            decimals=hld_table_decimal_places)
+        # display the table
+        format_engine.display_table(hld_table, hld_table_headers, 10)
 
-    st.write('')
-    st.write('')
-    metric_title_cols = st.columns(3)
-    with metric_title_cols[1]:
-        metric_writing = "Holdings Historical Metrics"
-        metric_format = f'<p style="text-align: center; ' \
-                        f'font-size: 26px; font-weight: bold;">' \
-                        f'{metric_writing}</p>'
-        st.markdown(metric_format, unsafe_allow_html=True)
+        # if the weights don't add up to 100%, tell the user why
+        if not np.isclose(weights.sum(), 1):
+            st.write('')
+            st.write("The weights do not add up to 100% because the "
+                     "benchmark volatility is low compared to the volatility "
+                     "of the investments. So the weight is scaled down and "
+                     "includes cash, so that the volatility of the portfolio "
+                     "matches the volatility of the benchmark. If you would like "
+                     "no cash, you must either choose lower volatility "
+                     "investments or choose an optimization that has more weight "
+                     "in stocks, or is Max Sharpe Ratio.")
 
-    # create a table of the recommended holdings
-    # use HTML / CSS styling to create a table
-    st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
-    # create the table
-    metric_table_index_width = 50
-    metric_table_title = 'Metric'
-    metric_table_headers = format_engine.get_metric_headers(obj_func)
-    metric_table_line_items = metrics
-    metric_table_format_type = ['percent', 'percent', 'float']
-    metric_table_decimal_places = 1
-    metric_table = format_engine.create_html_table(
-        metric_table_index_width, metric_table_title, metric_table_headers,
-        metric_table_line_items, metric_table_format_type,
-        decimals=metric_table_decimal_places)
-    # display the table
-    format_engine.display_table(metric_table, metric_table_headers, 10)
+        ####################################################################
+        # Display Metrics
+        ####################################################################
+
+        st.write('')
+        st.write('')
+        metric_title_cols = st.columns(3)
+        with metric_title_cols[1]:
+            metric_writing = "Holdings Historical Metrics"
+            metric_format = f'<p style="text-align: center; ' \
+                            f'font-size: 26px; font-weight: bold;">' \
+                            f'{metric_writing}</p>'
+            st.markdown(metric_format, unsafe_allow_html=True)
+
+        # create a table of the recommended holdings
+        # use HTML / CSS styling to create a table
+        st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
+        # create the table
+        metric_table_index_width = 50
+        metric_table_title = 'Metric'
+        metric_table_headers = format_engine.get_metric_headers(obj_func)
+        metric_table_line_items = metrics
+        metric_table_format_type = ['percent', 'percent', 'float']
+        metric_table_decimal_places = 1
+        metric_table = format_engine.create_html_table(
+            metric_table_index_width, metric_table_title, metric_table_headers,
+            metric_table_line_items, metric_table_format_type,
+            decimals=metric_table_decimal_places)
+        # display the table
+        format_engine.display_table(metric_table, metric_table_headers, 10)
 
     ##############################################################
     # DEAL WITH OPTIMIZER RETURNING NONE OR NOT=100%
