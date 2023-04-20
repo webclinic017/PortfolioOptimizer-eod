@@ -7,6 +7,7 @@ from PortfolioOptimizer.AnalyticTools import AnalyticTools
 from PortfolioOptimizer.DataTools import DataTools
 from PortfolioOptimizer.StreamlitTools import StreamlitTools
 
+import numpy as np
 import pandas as pd
 import streamlit as st
 
@@ -126,13 +127,32 @@ def main():
             # run the optimization and record the weights and metrics
             curr_weights = analytics_engine.run_optimization(
                 user_return_data, obj_func, objective_selection, return_data)
-            imp_weights.append(curr_weights)
+            # if the volatility of the benchmark is higher than any of the
+            # investments, we can't get weights under 100% so we return
+            # None and skip this iteration
+            if curr_weights is not None:
+                imp_weights.append(curr_weights)
             imp_metrics = analytics_engine.portfolio_metrics(
                 user_return_data, curr_weights, obj_func, objective_selection,
                 return_data, imp_metrics)
         # average the weights and metrics
-        weights = pd.DataFrame(imp_weights).mean()
-        metrics = analytics_engine.average_metrics(imp_metrics)
+        try:
+            weights = pd.DataFrame(imp_weights).mean()
+            metrics = analytics_engine.average_metrics(imp_metrics)
+        # we need to handle if all of the weights are None
+        except TypeError:
+            weights = None
+            metrics = None
+
+    ####################################################################
+    # Display if no Weights
+    ####################################################################
+
+    if weights is None:
+        st.error("The benchmark volatility is higher than any of the "
+                 "investments. Please try again with a different set of "
+                 "investments or choose an optimization that has less "
+                 "weight in stocks, or is Max Sharpe Ratio.")
 
     ####################################################################
     # Display Holdings
@@ -156,6 +176,9 @@ def main():
     hld_table_headers = ['Weight (%)']
     hld_table_line_items = {a: [w] for a, w in zip(investment_selection,
                                                    weights)}
+    # add cash if the weights don't add up to 100%
+    if not np.isclose(weights.sum(), 1):
+        hld_table_line_items['Cash'] = [1 - weights.sum()]
     hld_table_format_type = 'percent'
     hld_table_decimal_places = 0
     hld_table = format_engine.create_html_table(
@@ -164,6 +187,18 @@ def main():
         decimals=hld_table_decimal_places)
     # display the table
     format_engine.display_table(hld_table, hld_table_headers, 10)
+
+    # if the weights don't add up to 100%, tell the user why
+    if not np.isclose(weights.sum(), 1):
+        st.write('')
+        st.write("The weights do not add up to 100% because the "
+                 "benchmark volatility is low compared to the volatility "
+                 "of the investments. So the weight is scaled down and "
+                 "includes cash, so that the volatility of the portfolio "
+                 "matches the volatility of the benchmark. If you would like "
+                 "no cash, you must either choose lower volatility "
+                 "investments or choose an optimization that has more weight "
+                 "in stocks, or is Max Sharpe Ratio.")
 
     ####################################################################
     # Display Metrics
@@ -198,7 +233,7 @@ def main():
 
     ##############################################################
     # DEAL WITH OPTIMIZER RETURNING NONE OR NOT=100%
-    # ADD BENCHMARK METRICS, ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
+    # ADD METRIC NOTES, ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
 
 
 
