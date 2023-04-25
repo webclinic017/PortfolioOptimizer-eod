@@ -160,6 +160,7 @@ def main():
                 if curr_weights is not None:
                     imp_weights.append(curr_weights)
                 # record the metrics
+                st.write(return_data)
                 imp_metrics = analytics_engine.portfolio_metrics(
                     user_return_data, curr_weights, obj_func,
                     objective_selection, return_data, imp_metrics)
