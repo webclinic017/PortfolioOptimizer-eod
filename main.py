@@ -103,7 +103,7 @@ def main():
 
         # pull the data, using session state wrappers since this can
         # take a while
-        tables = sstate.state_pull_ticker_tables()
+        tables = data_engine.pull_ticker_tables()
         return_data = sstate.state_pull_return_data(tables)
 
         # get data for the selected investments
