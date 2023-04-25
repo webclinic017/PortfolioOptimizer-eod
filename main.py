@@ -107,9 +107,9 @@ def main():
 
     # we need to know the objective function throughout
     obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
-    st.write(any_missing)
     # if we don't have missing data, we can just run the analysis
     if not any_missing:
+        st.write(optimizer_option_selection)
         # run the optimization, potentially with bootstraps
         if optimizer_option_selection == 'Bootstrapping':
             st.write("BOOTSTRAPPING")
