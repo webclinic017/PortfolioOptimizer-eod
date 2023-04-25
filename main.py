@@ -273,10 +273,14 @@ def main():
                          "might not match exactly because we are using "
                          "bootstrapping. This means that we take a random "
                          "subsample of the data many times and then average "
-                         "the holdings to get our final holdings. So the "
-                         "volatility of the portfolio matches the volatility "
-                         "of the benchmark for each subsample, but not "
-                         "necessarily for the entire dataset.")
+                         "the holdings to get our final holdings. So we "
+                         "match the volatility of the portfolio to the "
+                         "volatility of the benchmark for each subsample, "
+                         "but that does not necessarily mean that once we "
+                         "have the final weights for the portfolio, the "
+                         "volatility will match the benchmark's volatility "
+                         "for the entire dataset. However, it should be "
+                         "relatively close.")
 
         ##############################################################
         # ALLOW USER TO RUN BACKTEST, PMM BOOTSTRAPPING
