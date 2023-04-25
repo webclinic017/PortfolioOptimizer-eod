@@ -159,7 +159,7 @@ class AnalyticTools(object):
                 metrics['Bench Average'].append(bench_metrics_engine.mean())
                 metrics['Bench Volatility'].append(
                     bench_metrics_engine.stddev())
-                metrics['SBench Sharpe Ratio'].append(
+                metrics['Bench Sharpe Ratio'].append(
                     bench_metrics_engine.sharpe_ratio())
 
         return metrics
