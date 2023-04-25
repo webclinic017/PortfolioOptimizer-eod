@@ -144,10 +144,16 @@ def main():
             for i in range(gv.DEFAULT_IMPUTE_COUNT):
                 user_return_data, _ = data_engine.get_user_data(
                     investment_selection, imp_data[i])
-                # run the optimization and record the weights
-                curr_weights = analytics_engine.run_optimization(
-                    user_return_data, obj_func, objective_selection,
-                    return_data)
+                # run the optimization, potentially with bootstraps, and
+                # record the weights
+                if 'Bootstrapping' in optimizer_option_selection:
+                    curr_weights = sstate.state_bootstrap_optimization(
+                        user_return_data, obj_func, objective_selection,
+                        return_data)
+                else:
+                    curr_weights = analytics_engine.run_optimization(
+                        user_return_data, obj_func, objective_selection,
+                        return_data)
                 # if the volatility of the benchmark is higher than any of
                 # the investments, we can't get weights under 100% so we
                 # return None and skip this iteration
