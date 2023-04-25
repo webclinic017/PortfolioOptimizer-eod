@@ -59,7 +59,7 @@ DEFAULT_INVESTMENTS = ['US Stocks', 'DM Stocks', 'EM Stocks', 'Global Bonds',
 DEFAULT_OPTIMIZER_OPTIONS = ['Bootstrapping']
 
 # Bootstrap defaults
-DEFAULT_BOOTSTRAP_COUNT = 1000
+DEFAULT_BOOTSTRAP_COUNT = 2
 
 # Imputation defaults
 DEFAULT_IMPUTE_COUNT = 5
