@@ -143,6 +143,7 @@ def main():
             imp_weights = []
             imp_metrics = {}
             for i in range(gv.DEFAULT_IMPUTE_COUNT):
+                st.write(imp_data[i])
                 user_return_data, _ = data_engine.get_user_data(
                     investment_selection, imp_data[i])
                 # run the optimization, potentially with bootstraps, and
@@ -164,7 +165,6 @@ def main():
                 imp_metrics = analytics_engine.portfolio_metrics(
                     user_return_data, curr_weights, obj_func,
                     objective_selection, return_data, imp_metrics)
-                st.write(imp_metrics)
             # average the weights and metrics
             try:
                 weights = pd.DataFrame(imp_weights).mean()
