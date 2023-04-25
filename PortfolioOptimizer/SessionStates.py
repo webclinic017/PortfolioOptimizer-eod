@@ -33,43 +33,40 @@ def state_pull_return_data(tables: list) -> pd.DataFrame:
     return return_data
 
 
-def _get_bootstrap_optimization(user_return_data: pd.DataFrame,
-                                obj_func: str, objective_selection: str,
-                                return_data: pd.DataFrame) -> pd.DataFrame:
-    """Get the optimized weights for the bootstrap data. This is used in
-        a couple places in state_bootstrap_optimization, so we break it
-        out into its own function."""
-    analytics_engine = AnalyticTools()
-    weights = analytics_engine.bootstrap_optimization(
-        user_return_data, obj_func, objective_selection,
-        return_data)
-
-    st.session_state.bs_user_return_data = user_return_data
-    st.session_state.bs_obj_func = obj_func
-    st.session_state.bs_objective_selection = objective_selection
-    st.session_state.bs_return_data = return_data
-    st.session_state.bs_weights = weights
-
-    return weights
-
 def state_bootstrap_optimization(user_return_data: pd.DataFrame,
                                  obj_func: str, objective_selection: str,
                                  return_data: pd.DataFrame) -> pd.DataFrame:
     """Bootstrap the return data and run the optimization based on the
         user's asset choices returns and the objective function
         selected by the user."""
-    if 'bs_weights' in st.session_state:
-        test_inputs = st.session_state.bs_user_return_data.equals(
-            user_return_data) and \
+    if 'bs_weights' in st.session_state and \
+            st.session_state.bs_user_return_data.equals(user_return_data) and \
             st.session_state.bs_obj_func == obj_func and \
             st.session_state.bs_objective_selection == objective_selection \
-            and st.session_state.bs_return_data.equals(return_data)
-        if test_inputs:
-            weights = st.session_state.bs_weights
-        else:
-            weights = _get_bootstrap_optimization(
-                user_return_data, obj_func, objective_selection, return_data)
+            and st.session_state.bs_return_data.equals(return_data):
+        weights = st.session_state.bs_weights
     else:
-        weights = _get_bootstrap_optimization(
-            user_return_data, obj_func, objective_selection, return_data)
+        analytics_engine = AnalyticTools()
+        weights = analytics_engine.bootstrap_optimization(
+            user_return_data, obj_func, objective_selection,
+            return_data)
+        st.session_state.bs_user_return_data = user_return_data
+        st.session_state.bs_obj_func = obj_func
+        st.session_state.bs_objective_selection = objective_selection
+        st.session_state.bs_return_data = return_data
+        st.session_state.bs_weights = weights
     return weights
+
+
+def state_pmm(data: pd.DataFrame, d: int) -> pd.DataFrame:
+    """Impute missing data using the predictive mean matching method."""
+    if 'imp_data' in st.session_state and st.session_state.pmm_data.equals(
+            data) and st.session_state.pmm_d == d:
+        imp_data = st.session_state.imp_data
+    else:
+        data_engine = DataTools()
+        imp_data = data_engine.pmm(data, d)
+        st.session_state.pmm_data = data
+        st.session_state.pmm_d = d
+        st.session_state.imp_data = imp_data
+    return imp_data
