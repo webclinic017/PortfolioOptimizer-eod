@@ -74,6 +74,8 @@ def state_pmm(data: pd.DataFrame, d: int) -> list:
         curr_data = next(imp_data_gen)
         st.write("curr_data", curr_data)
         imp_data.append(curr_data)
+    st.write(imp_data[0])
+    st.write(imp_data[1])
     st.session_state.pmm_data = data
     st.session_state.pmm_d = d
     st.session_state.imp_data = imp_data
