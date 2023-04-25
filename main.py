@@ -113,7 +113,7 @@ def main():
     if not any_missing:
         st.write(optimizer_option_selection)
         # run the optimization, potentially with bootstraps
-        if optimizer_option_selection == 'Bootstrapping':
+        if 'Bootstrapping' in optimizer_option_selection:
             st.write("BOOTSTRAPPING")
             weights = analytics_engine.bootstrap_optimization(
                 user_return_data, obj_func, objective_selection, return_data)
