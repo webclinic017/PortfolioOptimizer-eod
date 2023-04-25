@@ -90,7 +90,7 @@ def main():
     optimizer_option_selection = st.sidebar.multiselect(
         "Which optimization methods would you like to use?",
         gv.OPTIMIZER_CHOICES, default=gv.DEFAULT_OPTIMIZER_OPTIONS)
-    st.write('')
+    st.sidebar.write('')
 
     # only run if the user wants to
     if st.sidebar.button("Run Optimization"):
