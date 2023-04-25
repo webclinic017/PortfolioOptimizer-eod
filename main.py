@@ -95,6 +95,8 @@ def main():
     # only run if the user wants to
     if st.sidebar.button("Run Optimization"):
 
+        start_time = time.time()
+
         ################################################################
         # Pull Data
         ################################################################
@@ -305,13 +307,10 @@ def main():
              "investments and the weights from each subsample are averaged "
              "to create a single set of weights.")
 
+    st.write('')
+    st.write('')
+    end_time = time.time()
+    st.write(f"Total run time: {round(end_time - start_time, 1)} seconds")
 
 if __name__ == '__main__':
-    start_time = time.time()
-
     main()
-
-    end_time = time.time()
-    st.write('')
-    st.write('')
-    st.write(f"Total run time: {round(end_time - start_time, 1)} seconds")
