@@ -10,6 +10,7 @@ from PortfolioOptimizer.StreamlitTools import StreamlitTools
 import numpy as np
 import pandas as pd
 import streamlit as st
+import time
 
 
 def main():
@@ -301,5 +302,11 @@ def main():
 
 
 if __name__ == '__main__':
+    start_time = time.time()
+
     main()
 
+    end_time = time.time()
+    st.write('')
+    st.write('')
+    st.write(f"Total run time: {end_time - start_time} seconds")
