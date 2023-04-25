@@ -101,10 +101,10 @@ def main():
         # Pull Data
         ################################################################
 
-        # pull the data, using a session state wrapper for the data pull
-        # since that can take a while
+        # pull the data, using session state wrappers since this can
+        # take a while
         tables = sstate.state_pull_ticker_tables()
-        return_data = data_engine.pull_return_data(tables)
+        return_data = sstate.state_pull_return_data(tables)
 
         # get data for the selected investments
         user_return_data, any_missing = data_engine.get_user_data(
