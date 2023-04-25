@@ -258,7 +258,7 @@ def main():
             format_engine.display_table(metric_table, metric_table_headers, 10)
 
         ##############################################################
-        # ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
+        # ALLOW USER TO RUN BACKTEST, PMM BOOTSTRAPPING
 
 
 
