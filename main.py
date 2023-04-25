@@ -123,6 +123,7 @@ def main():
                 weights = sstate.state_bootstrap_optimization(
                     user_return_data, obj_func, objective_selection,
                     return_data)
+                st.write(user_return_data.shape)
             else:
                 weights = analytics_engine.run_optimization(
                     user_return_data, obj_func, objective_selection,
