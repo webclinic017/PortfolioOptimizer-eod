@@ -2,7 +2,6 @@
 Global variables to use throughout.
 """
 
-
 # User options
 # Security mapping is {Investment Type: (ETF Ticker, ETF Name)}
 SECURITY_MAPPING = {'Global Stocks': ('ACWI.US', 'iShares MSCI ACWI', '0.33%'),
@@ -58,6 +57,9 @@ OPTIMIZER_CHOICES = ['Bootstrapping']
 DEFAULT_INVESTMENTS = ['US Stocks', 'DM Stocks', 'EM Stocks', 'Global Bonds',
                        'Commodities']
 DEFAULT_OPTIMIZER_OPTIONS = ['Bootstrapping']
+
+# Bootstrap defaults
+DEFAULT_BOOTSTRAP_COUNT = 1000
 
 # Imputation defaults
 DEFAULT_IMPUTE_COUNT = 5

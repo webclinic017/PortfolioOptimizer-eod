@@ -109,9 +109,13 @@ def main():
     obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
     # if we don't have missing data, we can just run the analysis
     if not any_missing:
-        # run the optimization
-        weights = analytics_engine.run_optimization(
-            user_return_data, obj_func, objective_selection, return_data)
+        # run the optimization, potentially with bootstraps
+        if optimizer_option_selection == 'Bootstrapping':
+            weights = analytics_engine.bootstrap_optimization(
+                user_return_data, obj_func, objective_selection, return_data)
+        else:
+            weights = analytics_engine.run_optimization(
+                user_return_data, obj_func, objective_selection, return_data)
         try:
             metrics = analytics_engine.portfolio_metrics(
                 user_return_data, weights, obj_func, objective_selection,
@@ -128,7 +132,7 @@ def main():
         for _ in range(gv.DEFAULT_IMPUTE_COUNT):
             user_return_data, _ = data_engine.get_user_data(
                 investment_selection, next(imp_data))
-            # run the optimization and record the weights and metrics
+            # run the optimization and record the weights
             curr_weights = analytics_engine.run_optimization(
                 user_return_data, obj_func, objective_selection, return_data)
             # if the volatility of the benchmark is higher than any of the
@@ -136,6 +140,7 @@ def main():
             # None and skip this iteration
             if curr_weights is not None:
                 imp_weights.append(curr_weights)
+            # record the metrics
             imp_metrics = analytics_engine.portfolio_metrics(
                 user_return_data, curr_weights, obj_func, objective_selection,
                 return_data, imp_metrics)
@@ -238,8 +243,7 @@ def main():
         format_engine.display_table(metric_table, metric_table_headers, 10)
 
     ##############################################################
-    # DEAL WITH OPTIMIZER RETURNING NONE OR NOT=100%
-    # ADD METRIC NOTES, ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
+    # ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
 
 
 

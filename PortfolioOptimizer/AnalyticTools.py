@@ -4,11 +4,13 @@ Tools for data analytics.
 """
 
 from PortfolioOptimizer import GlobalVariables as gv
+from PortfolioOptimizer.DataTools import DataTools
 from PortfolioOptimizer.Optimizer import Optimizer
 from PortfolioOptimizer.PortfolioMetrics import PortfolioMetrics
 
 import numpy as np
 import pandas as pd
+import random
 
 
 class AnalyticTools(object):
@@ -45,6 +47,35 @@ class AnalyticTools(object):
             weights = opt_engine.optimize(obj_func)
 
         return weights
+
+    def bootstrap_optimization(self, user_return_data: pd.DataFrame,
+                               obj_func: str, objective_selection: str,
+                               return_data: pd.DataFrame) -> pd.DataFrame:
+        """Bootstrap the return data and run the optimization based on the
+            user's asset choices returns and the objective function
+            selected by the user."""
+        # get a bootstrap generator
+        data_engine = DataTools()
+        seed = random.randint(0, 100000)
+        gen = data_engine.get_bootstrap_data_ts(user_return_data, seed,
+                                                gv.DEFAULT_BOOTSTRAP_COUNT)
+
+        # get the weights for each bootstrap
+        bs_weights = []
+        for _ in range(gv.DEFAULT_BOOTSTRAP_COUNT):
+            bs_data = next(gen)
+            import streamlit as st
+            st.write(bs_data)
+            """
+            # run the optimization and record the weights
+            bs_weights = self.run_optimization(
+                bs_data, obj_func, objective_selection, return_data)
+            # if the volatility of the benchmark is higher than any of the
+            # investments, we can't get weights under 100% so we return
+            # None and skip this iteration
+            if curr_weights is not None:
+                imp_weights.append(curr_weights)
+            """
 
     def portfolio_metrics(self, port_returns: pd.DataFrame, weights: list,
                           obj_func: str, objective_selection: str,

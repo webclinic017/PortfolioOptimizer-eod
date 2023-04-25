@@ -9,8 +9,10 @@ from PortfolioOptimizer.GCPTools import GCPTools
 import pandas as pd
 import streamlit as st
 
+from arch.bootstrap import optimal_block_length
+from arch.bootstrap import StationaryBootstrap
 from statsmodels.imputation import mice
-from typing import Tuple
+from typing import Tuple, Union
 
 
 class DataTools(object):
@@ -84,6 +86,47 @@ class DataTools(object):
         missing_data = user_data.isnull().values.any()
 
         return user_data, missing_data
+
+    def get_bootstrap_data_ts(self, data: Union[pd.DataFrame, pd.Series],
+                              seed: int, bs_count: int,
+                              opt_col: str = None, exponent: int = 1) \
+            -> Union[pd.DataFrame, pd.Series]:
+        """
+        Gets bootstrap data from a set of time series data.
+        :param seed: The seed for bootstrapping for reproducibility.
+        :param bs_count: The number of iterations of the bootstrap.
+        :param opt_col: The name of the column to optimize the bootstrap
+            length on if we have a DataFrame (we don't need this with a
+            Series). If None, we will calculate for all columns and then
+            take the max.
+        :param exponent: The exponent to use for the data when determining
+            the optimal block length. So if exponent is 2, we will use the
+            squared data.
+        :return data[0][0]: The resulting data after bootstrap. This is a
+            generator, so it will only output the current data.
+        """
+        # alter the data to use the exponent
+        if exponent != 1:
+            data = data ** exponent
+
+        # get the optimal value for the block length either as a given
+        # column or the max of all columns
+        if isinstance(data, pd.Series):
+            opt = optimal_block_length(data)
+            opt_value = round(opt["stationary"], 0)
+        # this is the case of choosing a column in a DataFrame to use
+        elif opt_col is not None:
+            opt = optimal_block_length(data.loc[:, opt_col])
+            opt_value = round(opt.loc[opt_col, "stationary"], 0)
+        # this is the case of using the max of all columns
+        else:
+            opt = optimal_block_length(data)
+            opt_value = round(opt.max(axis=0)["stationary"], 0)
+
+        # run the bootstrap
+        bs = StationaryBootstrap(opt_value, data, seed=seed)
+        for bs_data in bs.bootstrap(bs_count):
+            yield bs_data[0][0]
 
     def pmm(self, data: pd.DataFrame, d: int) -> pd.DataFrame:
         """
