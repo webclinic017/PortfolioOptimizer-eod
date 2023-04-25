@@ -71,7 +71,7 @@ def state_pmm(data: pd.DataFrame, d: int) -> list:
     imp_data_gen = data_engine.pmm(data, d)
     imp_data = []
     for _ in range(d):
-        curr_data = next(imp_data_gen)
+        curr_data = next(imp_data_gen).copy()
         st.write("curr_data", curr_data)
         imp_data.append(curr_data)
     st.write(imp_data[0])
