@@ -86,9 +86,6 @@ class AnalyticTools(object):
             bs_bench_data.append(return_data.loc[curr_bs_data.index,
                                  ['acwi', 'bnd']])
 
-        import streamlit as st
-        st.write(bs_data[0].shape)
-
         # get the weights for each bootstrap
         bs_weights = []
         with ProcessPoolExecutor() as executor:
