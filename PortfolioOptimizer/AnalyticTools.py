@@ -153,7 +153,7 @@ class AnalyticTools(object):
             if 'Bench Average' not in metrics:
                 metrics['Bench Average'] = [bench_metrics_engine.mean()]
                 metrics['Bench Volatility'] = [bench_metrics_engine.stddev()]
-                metrics['SBench Sharpe Ratio'] = [
+                metrics['Bench Sharpe Ratio'] = [
                     bench_metrics_engine.sharpe_ratio()]
             else:
                 metrics['Bench Average'].append(bench_metrics_engine.mean())
