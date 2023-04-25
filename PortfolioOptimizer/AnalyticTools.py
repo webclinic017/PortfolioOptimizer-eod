@@ -64,8 +64,7 @@ class AnalyticTools(object):
         bs_weights = []
         for _ in range(gv.DEFAULT_BOOTSTRAP_COUNT):
             bs_data = next(gen)
-            import streamlit as st
-            st.write(bs_data)
+            bs_weights.append(bs_data)
             """
             # run the optimization and record the weights
             bs_weights = self.run_optimization(
@@ -76,6 +75,8 @@ class AnalyticTools(object):
             if curr_weights is not None:
                 imp_weights.append(curr_weights)
             """
+
+        return bs_weights
 
     def portfolio_metrics(self, port_returns: pd.DataFrame, weights: list,
                           obj_func: str, objective_selection: str,

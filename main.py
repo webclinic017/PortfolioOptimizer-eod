@@ -117,6 +117,8 @@ def main():
             st.write("BOOTSTRAPPING")
             weights = analytics_engine.bootstrap_optimization(
                 user_return_data, obj_func, objective_selection, return_data)
+            st.write(weights)
+            st.write(weights[0])
         else:
             weights = analytics_engine.run_optimization(
                 user_return_data, obj_func, objective_selection, return_data)
