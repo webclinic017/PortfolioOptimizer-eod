@@ -3,6 +3,7 @@ Runs the portfolio optimizer.
 """
 
 from PortfolioOptimizer import GlobalVariables as gv
+from PortfolioOptimizer import SessionStates as sstate
 from PortfolioOptimizer.AnalyticTools import AnalyticTools
 from PortfolioOptimizer.DataTools import DataTools
 from PortfolioOptimizer.StreamlitTools import StreamlitTools
@@ -90,162 +91,165 @@ def main():
         "Which optimization methods would you like to use?",
         gv.OPTIMIZER_CHOICES, default=gv.DEFAULT_OPTIMIZER_OPTIONS)
 
-    ####################################################################
-    # Pull Data
-    ####################################################################
+    # only run if the user wants to
+    if st.sidebar.button("Run Optimization"):
 
-    # pull the data
-    tables = data_engine.pull_ticker_tables()
-    return_data = data_engine.pull_return_data(tables)
+        ################################################################
+        # Pull Data
+        ################################################################
 
-    # get data for the selected investments
-    user_return_data, any_missing = data_engine.get_user_data(
-        investment_selection, return_data)
+        # pull the data
+        tables = sstate.state_pull_ticker_tables()
+        return_data = data_engine.pull_return_data(tables)
 
-    ####################################################################
-    # Run Analysis
-    ####################################################################
+        # get data for the selected investments
+        user_return_data, any_missing = data_engine.get_user_data(
+            investment_selection, return_data)
 
-    # we need to know the objective function throughout
-    obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
-    # if we don't have missing data, we can just run the analysis
-    if not any_missing:
-        # run the optimization, potentially with bootstraps
-        if 'Bootstrapping' in optimizer_option_selection:
-            weights = analytics_engine.bootstrap_optimization(
-                user_return_data, obj_func, objective_selection, return_data)
+        ################################################################
+        # Run Analysis
+        ################################################################
+
+        # we need to know the objective function throughout
+        obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
+        # if we don't have missing data, we can just run the analysis
+        if not any_missing:
+            # run the optimization, potentially with bootstraps
+            if 'Bootstrapping' in optimizer_option_selection:
+                weights = analytics_engine.bootstrap_optimization(
+                    user_return_data, obj_func, objective_selection, return_data)
+            else:
+                weights = analytics_engine.run_optimization(
+                    user_return_data, obj_func, objective_selection, return_data)
+            # run the metrics
+            try:
+                metrics = analytics_engine.portfolio_metrics(
+                    user_return_data, weights, obj_func, objective_selection,
+                    return_data, {})
+            # we need to handle if all the weights are None
+            except TypeError:
+                metrics = None
         else:
-            weights = analytics_engine.run_optimization(
-                user_return_data, obj_func, objective_selection, return_data)
-        # run the metrics
-        try:
-            metrics = analytics_engine.portfolio_metrics(
-                user_return_data, weights, obj_func, objective_selection,
-                return_data, {})
-        # we need to handle if all the weights are None
-        except TypeError:
-            metrics = None
-    else:
-        # if we have missing data, we need to impute it and run the
-        # analysis for each set of imputed data
-        imp_data = data_engine.pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
-        imp_weights = []
-        imp_metrics = {}
-        for _ in range(gv.DEFAULT_IMPUTE_COUNT):
-            user_return_data, _ = data_engine.get_user_data(
-                investment_selection, next(imp_data))
-            # run the optimization and record the weights
-            curr_weights = analytics_engine.run_optimization(
-                user_return_data, obj_func, objective_selection, return_data)
-            # if the volatility of the benchmark is higher than any of the
-            # investments, we can't get weights under 100% so we return
-            # None and skip this iteration
-            if curr_weights is not None:
-                imp_weights.append(curr_weights)
-            # record the metrics
-            imp_metrics = analytics_engine.portfolio_metrics(
-                user_return_data, curr_weights, obj_func, objective_selection,
-                return_data, imp_metrics)
-        # average the weights and metrics
-        try:
-            weights = pd.DataFrame(imp_weights).mean()
-            metrics = analytics_engine.average_metrics(imp_metrics)
-        # we need to handle if all the weights are None
-        except TypeError:
-            weights = None
-            metrics = None
-
-    ####################################################################
-    # Display if no Weights
-    ####################################################################
-
-    if weights is None:
-        st.error("The benchmark volatility is higher than any of the "
-                 "investments. Please try again with a different set of "
-                 "investments or choose an optimization that has less "
-                 "weight in stocks, or is Max Sharpe Ratio.")
-
-    else:
+            # if we have missing data, we need to impute it and run the
+            # analysis for each set of imputed data
+            imp_data = data_engine.pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
+            imp_weights = []
+            imp_metrics = {}
+            for _ in range(gv.DEFAULT_IMPUTE_COUNT):
+                user_return_data, _ = data_engine.get_user_data(
+                    investment_selection, next(imp_data))
+                # run the optimization and record the weights
+                curr_weights = analytics_engine.run_optimization(
+                    user_return_data, obj_func, objective_selection, return_data)
+                # if the volatility of the benchmark is higher than any of the
+                # investments, we can't get weights under 100% so we return
+                # None and skip this iteration
+                if curr_weights is not None:
+                    imp_weights.append(curr_weights)
+                # record the metrics
+                imp_metrics = analytics_engine.portfolio_metrics(
+                    user_return_data, curr_weights, obj_func, objective_selection,
+                    return_data, imp_metrics)
+            # average the weights and metrics
+            try:
+                weights = pd.DataFrame(imp_weights).mean()
+                metrics = analytics_engine.average_metrics(imp_metrics)
+            # we need to handle if all the weights are None
+            except TypeError:
+                weights = None
+                metrics = None
 
         ####################################################################
-        # Display Holdings
+        # Display if no Weights
         ####################################################################
 
-        st.write('')
-        hld_title_cols = st.columns(3)
-        with hld_title_cols[1]:
-            hld_writing = "Recommended Holdings"
-            hld_format = f'<p style="text-align: center; ' \
-                         f'font-size: 26px; font-weight: bold;">' \
-                         f'{hld_writing}</p>'
-            st.markdown(hld_format, unsafe_allow_html=True)
+        if weights is None:
+            st.error("The benchmark volatility is higher than any of the "
+                     "investments. Please try again with a different set of "
+                     "investments or choose an optimization that has less "
+                     "weight in stocks, or is Max Sharpe Ratio.")
 
-        # create a table of the recommended holdings
-        # use HTML / CSS styling to create a table
-        st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
-        # create the table
-        hdl_table_index_width = 50
-        hld_table_title = 'Asset Classes'
-        hld_table_headers = ['Weight (%)']
-        hld_table_line_items = {a: [w] for a, w in zip(investment_selection,
-                                                       weights)}
-        # add cash if the weights don't add up to 100%
-        if not np.isclose(weights.sum(), 1):
-            hld_table_line_items['Cash'] = [1 - weights.sum()]
-        hld_table_format_type = 'percent'
-        hld_table_decimal_places = 0
-        hld_table = format_engine.create_html_table(
-            hdl_table_index_width, hld_table_title, hld_table_headers,
-            hld_table_line_items, hld_table_format_type,
-            decimals=hld_table_decimal_places)
-        # display the table
-        format_engine.display_table(hld_table, hld_table_headers, 10)
+        else:
 
-        # if the weights don't add up to 100%, tell the user why
-        if not np.isclose(weights.sum(), 1):
+            ####################################################################
+            # Display Holdings
+            ####################################################################
+
             st.write('')
-            st.write("The weights do not add up to 100% because the "
-                     "benchmark volatility is low compared to the volatility "
-                     "of the investments. So the weight is scaled down and "
-                     "includes cash, so that the volatility of the portfolio "
-                     "matches the volatility of the benchmark. If you would like "
-                     "no cash, you must either choose lower volatility "
-                     "investments or choose an optimization that has more weight "
-                     "in stocks, or is Max Sharpe Ratio.")
+            hld_title_cols = st.columns(3)
+            with hld_title_cols[1]:
+                hld_writing = "Recommended Holdings"
+                hld_format = f'<p style="text-align: center; ' \
+                             f'font-size: 26px; font-weight: bold;">' \
+                             f'{hld_writing}</p>'
+                st.markdown(hld_format, unsafe_allow_html=True)
 
-        ####################################################################
-        # Display Metrics
-        ####################################################################
+            # create a table of the recommended holdings
+            # use HTML / CSS styling to create a table
+            st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
+            # create the table
+            hdl_table_index_width = 50
+            hld_table_title = 'Asset Classes'
+            hld_table_headers = ['Weight (%)']
+            hld_table_line_items = {a: [w] for a, w in zip(investment_selection,
+                                                           weights)}
+            # add cash if the weights don't add up to 100%
+            if not np.isclose(weights.sum(), 1):
+                hld_table_line_items['Cash'] = [1 - weights.sum()]
+            hld_table_format_type = 'percent'
+            hld_table_decimal_places = 0
+            hld_table = format_engine.create_html_table(
+                hdl_table_index_width, hld_table_title, hld_table_headers,
+                hld_table_line_items, hld_table_format_type,
+                decimals=hld_table_decimal_places)
+            # display the table
+            format_engine.display_table(hld_table, hld_table_headers, 10)
 
-        st.write('')
-        st.write('')
-        metric_title_cols = st.columns(3)
-        with metric_title_cols[1]:
-            metric_writing = "Holdings Historical Metrics"
-            metric_format = f'<p style="text-align: center; ' \
-                            f'font-size: 26px; font-weight: bold;">' \
-                            f'{metric_writing}</p>'
-            st.markdown(metric_format, unsafe_allow_html=True)
+            # if the weights don't add up to 100%, tell the user why
+            if not np.isclose(weights.sum(), 1):
+                st.write('')
+                st.write("The weights do not add up to 100% because the "
+                         "benchmark volatility is low compared to the volatility "
+                         "of the investments. So the weight is scaled down and "
+                         "includes cash, so that the volatility of the portfolio "
+                         "matches the volatility of the benchmark. If you would like "
+                         "no cash, you must either choose lower volatility "
+                         "investments or choose an optimization that has more weight "
+                         "in stocks, or is Max Sharpe Ratio.")
 
-        # create a table of the recommended holdings
-        # use HTML / CSS styling to create a table
-        st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
-        # create the table
-        metric_table_index_width = 50
-        metric_table_title = 'Metric'
-        metric_table_headers = format_engine.get_metric_headers(obj_func)
-        metric_table_line_items = metrics
-        metric_table_format_type = ['percent', 'percent', 'float']
-        metric_table_decimal_places = 1
-        metric_table = format_engine.create_html_table(
-            metric_table_index_width, metric_table_title, metric_table_headers,
-            metric_table_line_items, metric_table_format_type,
-            decimals=metric_table_decimal_places)
-        # display the table
-        format_engine.display_table(metric_table, metric_table_headers, 10)
+            ####################################################################
+            # Display Metrics
+            ####################################################################
 
-    ##############################################################
-    # ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
+            st.write('')
+            st.write('')
+            metric_title_cols = st.columns(3)
+            with metric_title_cols[1]:
+                metric_writing = "Holdings Historical Metrics"
+                metric_format = f'<p style="text-align: center; ' \
+                                f'font-size: 26px; font-weight: bold;">' \
+                                f'{metric_writing}</p>'
+                st.markdown(metric_format, unsafe_allow_html=True)
+
+            # create a table of the recommended holdings
+            # use HTML / CSS styling to create a table
+            st.markdown(gv.CSS_TABLE_STYLE, unsafe_allow_html=True)
+            # create the table
+            metric_table_index_width = 50
+            metric_table_title = 'Metric'
+            metric_table_headers = format_engine.get_metric_headers(obj_func)
+            metric_table_line_items = metrics
+            metric_table_format_type = ['percent', 'percent', 'float']
+            metric_table_decimal_places = 1
+            metric_table = format_engine.create_html_table(
+                metric_table_index_width, metric_table_title, metric_table_headers,
+                metric_table_line_items, metric_table_format_type,
+                decimals=metric_table_decimal_places)
+            # display the table
+            format_engine.display_table(metric_table, metric_table_headers, 10)
+
+        ##############################################################
+        # ALLOW USER TO RUN BACKTEST, BOOTSTRAPPING
 
 
 

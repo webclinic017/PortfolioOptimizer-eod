@@ -1,4 +1,5 @@
 from PortfolioOptimizer import GlobalVariables
+from PortfolioOptimizer import SessionStates
 from PortfolioOptimizer.AnalyticTools import AnalyticTools
 from PortfolioOptimizer.DataTools import DataTools
 from PortfolioOptimizer.GCPTools import GCPTools
