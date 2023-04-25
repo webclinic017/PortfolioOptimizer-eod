@@ -103,7 +103,7 @@ def main():
 
         # pull the data
         tables = sstate.state_pull_ticker_tables()
-        return_data = data_engine.pull_return_data(tables)
+        return_data = sstate.state_pull_return_data(tables)
 
         # get data for the selected investments
         user_return_data, any_missing = data_engine.get_user_data(
@@ -307,10 +307,13 @@ def main():
              "investments and the weights from each subsample are averaged "
              "to create a single set of weights.")
 
-    st.write('')
-    st.write('')
-    end_time = time.time()
-    st.write(f"Total run time: {round(end_time - start_time, 1)} seconds")
+    # show the run time if the analysis has been run
+    if 'start_time' in locals():
+        st.write('')
+        st.write('')
+        end_time = time.time()
+        st.write(f"Total run time: {round(end_time - start_time, 1)} seconds")
+
 
 if __name__ == '__main__':
     main()
