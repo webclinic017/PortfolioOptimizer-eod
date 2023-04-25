@@ -309,4 +309,4 @@ if __name__ == '__main__':
     end_time = time.time()
     st.write('')
     st.write('')
-    st.write(f"Total run time: {end_time - start_time} seconds")
+    st.write(f"Total run time: {round(end_time - start_time, 1)} seconds")
