@@ -141,9 +141,9 @@ def main():
             imp_data = sstate.state_pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
             imp_weights = []
             imp_metrics = {}
-            for _ in range(gv.DEFAULT_IMPUTE_COUNT):
+            for i in range(gv.DEFAULT_IMPUTE_COUNT):
                 user_return_data, _ = data_engine.get_user_data(
-                    investment_selection, next(imp_data))
+                    investment_selection, imp_data[i])
                 # run the optimization and record the weights
                 curr_weights = analytics_engine.run_optimization(
                     user_return_data, obj_func, objective_selection,
