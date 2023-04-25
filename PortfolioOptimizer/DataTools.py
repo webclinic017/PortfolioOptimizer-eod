@@ -91,10 +91,10 @@ class DataTools(object):
                     trunc: float) -> Union[pd.DataFrame, pd.Series]:
         """Truncates a certain percentage of the data."""
         if isinstance(data, pd.Series):
-            num_rows = round(len(data) * trunc, 0)
+            num_rows = int(round(len(data) * trunc, 0))
             output_data = data.iloc[:num_rows]
         else:
-            num_rows = round(data.shape[0] * trunc, 0)
+            num_rows = int(round(data.shape[0] * trunc, 0))
             output_data = data.iloc[:num_rows, :]
 
         return output_data
