@@ -101,7 +101,8 @@ def main():
         # Pull Data
         ################################################################
 
-        # pull the data
+        # pull the data, using a session state wrapper since data
+        # pulls can take some time
         tables = sstate.state_pull_ticker_tables()
         return_data = sstate.state_pull_return_data(tables)
 

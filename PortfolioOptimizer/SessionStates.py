@@ -17,6 +17,7 @@ def state_pull_ticker_tables():
         st.session_state.tables = tables
     return tables
 
+
 def state_pull_return_data(tables):
     """Get the asset class return data."""
     if 'return_data' in st.session_state and \
