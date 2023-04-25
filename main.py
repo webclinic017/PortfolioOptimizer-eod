@@ -132,6 +132,7 @@ def main():
                 metrics = analytics_engine.portfolio_metrics(
                     user_return_data, weights, obj_func, objective_selection,
                     return_data, {})
+                metrics = analytics_engine.average_metrics(metrics)
             # we need to handle if all the weights are None
             except TypeError:
                 metrics = None
