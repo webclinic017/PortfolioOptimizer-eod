@@ -166,6 +166,7 @@ def main():
                 imp_metrics = analytics_engine.portfolio_metrics(
                     user_return_data, curr_weights, obj_func,
                     objective_selection, return_data, imp_metrics)
+            st.write(imp_metrics)
             # average the weights and metrics
             try:
                 weights = pd.DataFrame(imp_weights).mean()
