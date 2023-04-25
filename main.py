@@ -138,7 +138,7 @@ def main():
         else:
             # if we have missing data, we need to impute it and run the
             # analysis for each set of imputed data
-            imp_data = data_engine.pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
+            imp_data = sstate.state_pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
             imp_weights = []
             imp_metrics = {}
             for _ in range(gv.DEFAULT_IMPUTE_COUNT):
