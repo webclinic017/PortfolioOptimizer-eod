@@ -87,9 +87,23 @@ class DataTools(object):
 
         return user_data, missing_data
 
+    def _trunc_data(self, data: Union[pd.DataFrame, pd.Series],
+                    trunc: float) -> Union[pd.DataFrame, pd.Series]:
+        """Truncates a certain percentage of the data."""
+        if isinstance(data, pd.Series):
+            num_rows = round(len(data) * trunc, 0)
+            output_data = data.iloc[:num_rows]
+        else:
+            num_rows = round(data.shape[0] * trunc, 0)
+            output_data = data.iloc[:num_rows, :]
+
+        return output_data
+
+
     def get_bootstrap_data_ts(self, data: Union[pd.DataFrame, pd.Series],
                               seed: int, bs_count: int,
-                              opt_col: str = None, exponent: int = 1) \
+                              opt_col: str = None, exponent: int = 1,
+                              trunc: float = None) \
             -> Union[pd.DataFrame, pd.Series]:
         """
         Gets bootstrap data from a set of time series data.
@@ -102,6 +116,11 @@ class DataTools(object):
         :param exponent: The exponent to use for the data when determining
             the optimal block length. So if exponent is 2, we will use the
             squared data.
+        :param trunc: The percentage of data to keep. So if trunc is 0.5,
+            we will keep the top 50% of data. This is useful since
+            the StationaryBootstrap method will just reorder the data, but
+            using a subset with reduce the correlation with the original
+            dataset.
         :return data[0][0]: The resulting data after bootstrap. This is a
             generator, so it will only output the current data.
         """
@@ -126,7 +145,12 @@ class DataTools(object):
         # run the bootstrap
         bs = StationaryBootstrap(opt_value, data, seed=seed)
         for bs_data in bs.bootstrap(bs_count):
-            yield bs_data[0][0]
+            output_data = bs_data[0][0]
+            # if we are truncating, do so
+            if trunc is not None:
+                output_data = self._trunc_data(output_data, trunc)
+
+            yield output_data
 
     def pmm(self, data: pd.DataFrame, d: int) -> pd.DataFrame:
         """
