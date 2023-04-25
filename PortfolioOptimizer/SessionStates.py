@@ -59,21 +59,22 @@ def state_bootstrap_optimization(user_return_data: pd.DataFrame,
 
 
 def state_pmm(data: pd.DataFrame, d: int) -> list:
-    """Impute missing data using the predictive mean matching method."""
+    """Impute missing data using the predictive mean matching method.
     if 'imp_data' in st.session_state and st.session_state.pmm_data.equals(
             data) and st.session_state.pmm_d == d:
         imp_data = st.session_state.imp_data
     else:
-        st.write('Imputing missing data using the predictive mean matching ')
-        st.write(d)
-        data_engine = DataTools()
-        imp_data_gen = data_engine.pmm(data, d)
-        imp_data = []
-        for _ in range(d):
-            curr_data = next(imp_data_gen)
-            st.write(curr_data)
-            imp_data.append(curr_data)
-        st.session_state.pmm_data = data
-        st.session_state.pmm_d = d
-        st.session_state.imp_data = imp_data
+    """
+    st.write('Imputing missing data using the predictive mean matching ')
+    st.write(d)
+    data_engine = DataTools()
+    imp_data_gen = data_engine.pmm(data, d)
+    imp_data = []
+    for _ in range(d):
+        curr_data = next(imp_data_gen)
+        st.write(curr_data)
+        imp_data.append(curr_data)
+    st.session_state.pmm_data = data
+    st.session_state.pmm_d = d
+    st.session_state.imp_data = imp_data
     return imp_data
