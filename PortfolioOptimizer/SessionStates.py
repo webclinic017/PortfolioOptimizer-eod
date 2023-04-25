@@ -2,12 +2,14 @@
 useful for storing variables that are the outputs of class functions,
 which are hard to cache."""
 
+from PortfolioOptimizer.AnalyticTools import AnalyticTools
 from PortfolioOptimizer.DataTools import DataTools
 
+import pandas as pd
 import streamlit as st
 
 
-def state_pull_ticker_tables():
+def state_pull_ticker_tables() -> list:
     """Get the asset class data tables."""
     if 'tables' in st.session_state:
         tables = st.session_state.tables
@@ -18,7 +20,7 @@ def state_pull_ticker_tables():
     return tables
 
 
-def state_pull_return_data(tables):
+def state_pull_return_data(tables: list) -> pd.DataFrame:
     """Get the asset class return data."""
     if 'return_data' in st.session_state and \
             st.session_state.return_tables == tables:
@@ -29,3 +31,45 @@ def state_pull_return_data(tables):
         st.session_state.return_data = return_data
         st.session_state.return_tables = tables
     return return_data
+
+
+def _get_bootstrap_optimization(user_return_data: pd.DataFrame,
+                                obj_func: str, objective_selection: str,
+                                return_data: pd.DataFrame) -> pd.DataFrame:
+    """Get the optimized weights for the bootstrap data. This is used in
+        a couple places in state_bootstrap_optimization, so we break it
+        out into its own function."""
+    analytics_engine = AnalyticTools()
+    weights = analytics_engine.bootstrap_optimization(
+        user_return_data, obj_func, objective_selection,
+        return_data)
+
+    st.session_state.bs_user_return_data = user_return_data
+    st.session_state.bs_obj_func = obj_func
+    st.session_state.bs_objective_selection = objective_selection
+    st.session_state.bs_return_data = return_data
+    st.session_state.bs_weights = weights
+
+    return weights
+
+def state_bootstrap_optimization(user_return_data: pd.DataFrame,
+                                 obj_func: str, objective_selection: str,
+                                 return_data: pd.DataFrame) -> pd.DataFrame:
+    """Bootstrap the return data and run the optimization based on the
+        user's asset choices returns and the objective function
+        selected by the user."""
+    if 'bs_weights' in st.session_state:
+        test_inputs = st.session_state.bs_user_return_data.equals(
+            user_return_data) and \
+            st.session_state.bs_obj_func == obj_func and \
+            st.session_state.bs_objective_selection == objective_selection \
+            and st.session_state.bs_return_data.equals(return_data)
+        if test_inputs:
+            weights = st.session_state.bs_weights
+        else:
+            weights = _get_bootstrap_optimization(
+                user_return_data, obj_func, objective_selection, return_data)
+    else:
+        weights = _get_bootstrap_optimization(
+            user_return_data, obj_func, objective_selection, return_data)
+    return weights
