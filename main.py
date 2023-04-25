@@ -107,21 +107,16 @@ def main():
 
     # we need to know the objective function throughout
     obj_func = gv.OBJECTIVE_CHOICES[objective_selection][0]
-    st.write(any_missing)
-    st.write(not any_missing)
     # if we don't have missing data, we can just run the analysis
     if not any_missing:
-        st.write(optimizer_option_selection)
         # run the optimization, potentially with bootstraps
         if 'Bootstrapping' in optimizer_option_selection:
-            st.write("BOOTSTRAPPING")
             weights = analytics_engine.bootstrap_optimization(
                 user_return_data, obj_func, objective_selection, return_data)
-            st.write(weights)
-            st.write(weights[0])
         else:
             weights = analytics_engine.run_optimization(
                 user_return_data, obj_func, objective_selection, return_data)
+        # run the metrics
         try:
             metrics = analytics_engine.portfolio_metrics(
                 user_return_data, weights, obj_func, objective_selection,

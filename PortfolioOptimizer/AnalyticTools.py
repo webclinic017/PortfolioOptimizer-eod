@@ -53,8 +53,20 @@ class AnalyticTools(object):
                                return_data: pd.DataFrame) -> pd.DataFrame:
         """Bootstrap the return data and run the optimization based on the
             user's asset choices returns and the objective function
-            selected by the user."""
-        # get a bootstrap generator
+            selected by the user.
+        :param user_return_data: The return data for the investments the
+            user will use.
+        :param obj_func: The objective function to use for the
+            optimization.
+        :param objective_selection: The objective selection to use for the
+            optimization, which will define the weights of the benchmark
+            if the objective function is max_return.
+        :param return_data: The return data for the benchmark.
+        :return weights: The bootstrapped weights for the optimized
+            portfolio.
+        """
+
+        # get a bootstrap generator for the user's return data
         data_engine = DataTools()
         seed = random.randint(0, 100000)
         gen = data_engine.get_bootstrap_data_ts(user_return_data, seed,
@@ -64,19 +76,26 @@ class AnalyticTools(object):
         bs_weights = []
         for _ in range(gv.DEFAULT_BOOTSTRAP_COUNT):
             bs_data = next(gen)
-            bs_weights.append(bs_data)
-            """
+            # we want the benchmark to also have the same dates as the
+            # bootstrap data
+            bs_bench_data = return_data.loc[bs_data.index, ['acwi', 'bnd']]
             # run the optimization and record the weights
-            bs_weights = self.run_optimization(
-                bs_data, obj_func, objective_selection, return_data)
+            curr_weights = self.run_optimization(
+                bs_data, obj_func, objective_selection, bs_bench_data)
             # if the volatility of the benchmark is higher than any of the
             # investments, we can't get weights under 100% so we return
             # None and skip this iteration
             if curr_weights is not None:
-                imp_weights.append(curr_weights)
-            """
+                bs_weights.append(curr_weights)
 
-        return bs_weights
+        # average the weights
+        try:
+            weights = pd.DataFrame(bs_weights).mean()
+        # we need to handle if all the weights are None
+        except TypeError:
+            weights = None
+
+        return weights
 
     def portfolio_metrics(self, port_returns: pd.DataFrame, weights: list,
                           obj_func: str, objective_selection: str,
