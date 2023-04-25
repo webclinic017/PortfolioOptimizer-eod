@@ -161,7 +161,7 @@ class DataTools(object):
         """
         # set up the imputer
         imp = mice.MICEData(data)
-        for i in range(d):
+        for _ in range(d):
             # perform PMM
             imp.update_all()
             # get the imputed data
