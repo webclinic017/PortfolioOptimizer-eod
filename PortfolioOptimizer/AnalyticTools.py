@@ -86,7 +86,7 @@ class AnalyticTools(object):
                                  ['acwi', 'bnd']])
 
         import streamlit as st
-        st.write(bs_data[0])
+        st.write(bs_data[0].shape)
 
         # get the weights for each bootstrap
         bs_weights = []
