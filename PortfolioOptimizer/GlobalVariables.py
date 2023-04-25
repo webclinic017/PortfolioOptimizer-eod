@@ -60,6 +60,7 @@ DEFAULT_OPTIMIZER_OPTIONS = ['Bootstrapping']
 
 # Bootstrap defaults
 DEFAULT_BOOTSTRAP_COUNT = 100
+DEFAULT_BOOTSTRAP_TRUNC = 0.6
 
 # Imputation defaults
 DEFAULT_IMPUTE_COUNT = 5

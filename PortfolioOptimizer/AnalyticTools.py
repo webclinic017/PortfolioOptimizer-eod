@@ -71,8 +71,9 @@ class AnalyticTools(object):
         # get a bootstrap generator for the user's return data
         data_engine = DataTools()
         seed = random.randint(0, 100000)
-        gen = data_engine.get_bootstrap_data_ts(user_return_data, seed,
-                                                gv.DEFAULT_BOOTSTRAP_COUNT)
+        gen = data_engine.get_bootstrap_data_ts(
+            user_return_data, seed, gv.DEFAULT_BOOTSTRAP_COUNT,
+            trunc=gv.DEFAULT_BOOTSTRAP_TRUNC)
 
         # get all the bootstrap data so we can parallelize
         bs_data = []
