@@ -149,10 +149,18 @@ class AnalyticTools(object):
             bench_rets = return_data[['acwi', 'bnd']]
             bench_weights = gv.OBJECTIVE_CHOICES[objective_selection][1]
             bench_metrics_engine = PortfolioMetrics(bench_rets, bench_weights)
-            # then calculate the metrics for the benchmark and append
-            metrics['Average'].append(bench_metrics_engine.mean())
-            metrics['Volatility'].append(bench_metrics_engine.stddev())
-            metrics['Sharpe Ratio'].append(bench_metrics_engine.sharpe_ratio())
+            # then calculate the metrics for the benchmark
+            if 'Bench Average' not in metrics:
+                metrics['Bench Average'] = [bench_metrics_engine.mean()]
+                metrics['Bench Volatility'] = [bench_metrics_engine.stddev()]
+                metrics['SBench Sharpe Ratio'] = [
+                    bench_metrics_engine.sharpe_ratio()]
+            else:
+                metrics['Bench Average'].append(bench_metrics_engine.mean())
+                metrics['Bench Volatility'].append(
+                    bench_metrics_engine.stddev())
+                metrics['SBench Sharpe Ratio'].append(
+                    bench_metrics_engine.sharpe_ratio())
 
         return metrics
 
