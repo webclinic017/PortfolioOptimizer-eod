@@ -12,6 +12,9 @@ import numpy as np
 import pandas as pd
 import random
 
+from concurrent.futures import ProcessPoolExecutor
+from itertools import repeat
+
 
 class AnalyticTools(object):
     def __init__(self) -> None:
@@ -65,28 +68,35 @@ class AnalyticTools(object):
         :return weights: The bootstrapped weights for the optimized
             portfolio.
         """
-
         # get a bootstrap generator for the user's return data
         data_engine = DataTools()
         seed = random.randint(0, 100000)
         gen = data_engine.get_bootstrap_data_ts(user_return_data, seed,
                                                 gv.DEFAULT_BOOTSTRAP_COUNT)
 
-        # get the weights for each bootstrap
-        bs_weights = []
+        # get all the bootstrap data so we can parallelize
+        bs_data = []
+        bs_bench_data = []
         for _ in range(gv.DEFAULT_BOOTSTRAP_COUNT):
-            bs_data = next(gen)
+            curr_bs_data = next(gen)
+            bs_data.append(curr_bs_data)
             # we want the benchmark to also have the same dates as the
             # bootstrap data
-            bs_bench_data = return_data.loc[bs_data.index, ['acwi', 'bnd']]
-            # run the optimization and record the weights
-            curr_weights = self.run_optimization(
-                bs_data, obj_func, objective_selection, bs_bench_data)
-            # if the volatility of the benchmark is higher than any of the
-            # investments, we can't get weights under 100% so we return
-            # None and skip this iteration
-            if curr_weights is not None:
-                bs_weights.append(curr_weights)
+            bs_bench_data.append(return_data.loc[curr_bs_data.index,
+                                 ['acwi', 'bnd']])
+
+        # get the weights for each bootstrap
+        bs_weights = []
+        with ProcessPoolExecutor() as executor:
+            for curr_weights in executor.map(self.run_optimization,
+                                             bs_data, repeat(obj_func),
+                                             repeat(objective_selection),
+                                             bs_bench_data):
+                # if the volatility of the benchmark is higher than any of
+                # the investments, we can't get weights under 100% so we
+                # return None and skip this iteration
+                if curr_weights is not None:
+                    bs_weights.append(curr_weights)
 
         # average the weights
         try:
