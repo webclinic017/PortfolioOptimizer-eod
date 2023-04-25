@@ -140,8 +140,6 @@ def main():
             # if we have missing data, we need to impute it and run the
             # analysis for each set of imputed data
             imp_data = sstate.state_pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
-            st.write(imp_data[0])
-            st.write(imp_data[1])
             imp_weights = []
             imp_metrics = {}
             for i in range(gv.DEFAULT_IMPUTE_COUNT):
@@ -166,7 +164,6 @@ def main():
                 imp_metrics = analytics_engine.portfolio_metrics(
                     user_return_data, curr_weights, obj_func,
                     objective_selection, return_data, imp_metrics)
-            st.write(imp_metrics)
             # average the weights and metrics
             try:
                 weights = pd.DataFrame(imp_weights).mean()
@@ -266,6 +263,20 @@ def main():
                 decimals=metric_table_decimal_places)
             # display the table
             format_engine.display_table(metric_table, metric_table_headers, 10)
+
+            # let the user know that the volatility for the portfolio and
+            # benchmark might not match if we are using bootstrapping
+            if objective_selection != 'Max Sharpe Ratio' and \
+                    'Bootstrapping' in optimizer_option_selection:
+                st.write('')
+                st.write("The volatility for the portfolio and benchmark "
+                         "might not match exactly because we are using "
+                         "bootstrapping. This means that we take a random "
+                         "subsample of the data many times and then average "
+                         "the holdings to get our final holdings. So the "
+                         "volatility of the portfolio matches the volatility "
+                         "of the benchmark for each subsample, but not "
+                         "necessarily for the entire dataset.")
 
         ##############################################################
         # ALLOW USER TO RUN BACKTEST, PMM BOOTSTRAPPING
