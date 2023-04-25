@@ -140,10 +140,13 @@ def main():
             # if we have missing data, we need to impute it and run the
             # analysis for each set of imputed data
             imp_data = sstate.state_pmm(return_data, gv.DEFAULT_IMPUTE_COUNT)
+            st.write(imp_data)
+            st.write(imp_data[0])
+            st.write(type(imp_data))
+            st.write(type(imp_data[0]))
             imp_weights = []
             imp_metrics = {}
             for i in range(gv.DEFAULT_IMPUTE_COUNT):
-                st.write(imp_data[i])
                 user_return_data, _ = data_engine.get_user_data(
                     investment_selection, imp_data[i])
                 # run the optimization, potentially with bootstraps, and

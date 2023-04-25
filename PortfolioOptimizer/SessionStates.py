@@ -65,6 +65,7 @@ def state_pmm(data: pd.DataFrame, d: int) -> list:
         imp_data = st.session_state.imp_data
     else:
         st.write('Imputing missing data using the predictive mean matching ')
+        st.write(d)
         data_engine = DataTools()
         imp_data_gen = data_engine.pmm(data, d)
         imp_data = []
